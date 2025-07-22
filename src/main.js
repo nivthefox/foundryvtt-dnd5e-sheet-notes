@@ -7,6 +7,8 @@ import { id as module_id } from '../module.json';
 import { initializeNotesTab } from './features/notes-tab';
 import { registerNoteTests } from './models/Note.quench';
 import { registerNoteManagerTests } from './services/NoteManager.quench';
+import { registerCategoryTests } from './models/Category.quench';
+import { registerCategoryManagerTests } from './services/CategoryManager.quench';
 
 Hooks.once('init', () => {
   console.debug(`Initializing ${module_id}`);
@@ -18,6 +20,8 @@ Hooks.once('init', () => {
   if (game.modules.get('quench')?.active) {
     registerNoteTests();
     registerNoteManagerTests();
+    registerCategoryTests();
+    registerCategoryManagerTests();
   }
 });
 

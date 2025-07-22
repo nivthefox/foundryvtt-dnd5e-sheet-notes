@@ -9,20 +9,6 @@ export class NoteManager {
   static FLAG_KEY = 'notes';
 
   /**
-   * Initialize notes array on actor if not present
-   * @param {Actor} actor - The actor to initialize
-   * @returns {Promise<void>}
-   */
-  static async initializeActor(actor) {
-    if (!actor) throw new Error('Actor must be provided');
-
-    const notes = actor.getFlag(MODULE_ID, this.FLAG_KEY);
-    if (!Array.isArray(notes)) {
-      await actor.setFlag(MODULE_ID, this.FLAG_KEY, []);
-    }
-  }
-
-  /**
    * Create a new note on the actor
    * @param {Actor} actor - The actor to add the note to
    * @param {Object} noteData - Note data
@@ -31,8 +17,8 @@ export class NoteManager {
   static async createNote(actor, noteData = {}) {
     if (!actor) throw new Error('Actor must be provided');
 
-    // Get existing notes
-    const notes = this.getAllNotes(actor);
+    // Get existing notes (or initialize empty array)
+    const notes = actor.getFlag(MODULE_ID, this.FLAG_KEY) || [];
 
     // Calculate sort value if not provided
     if (noteData.sort === undefined) {
@@ -227,6 +213,42 @@ export class NoteManager {
     }
 
     await actor.setFlag(MODULE_ID, this.FLAG_KEY, notes);
+  }
+
+  /**
+   * Validate and clean up orphaned category references in notes
+   * @param {Actor} actor - The actor to validate notes for
+   * @returns {Promise<number>} - Number of notes cleaned
+   */
+  static async validateCategoryReferences(actor) {
+    if (!actor) throw new Error('Actor must be provided');
+
+    const notes = this.getAllNotes(actor);
+    const categories = actor.getFlag(MODULE_ID, 'categories') || [];
+    const validCategoryKeys = new Set(categories.map(c => c.key));
+
+    let cleanedCount = 0;
+    let hasChanges = false;
+
+    for (const note of notes) {
+      const categoryKey = note.flags?.[MODULE_ID]?.category;
+
+      // If note has a category reference that doesn't exist, set it to null
+      if (categoryKey && !validCategoryKeys.has(categoryKey)) {
+        if (!note.flags) note.flags = {};
+        if (!note.flags[MODULE_ID]) note.flags[MODULE_ID] = {};
+        note.flags[MODULE_ID].category = null;
+        cleanedCount++;
+        hasChanges = true;
+      }
+    }
+
+    // Save changes if any were made
+    if (hasChanges) {
+      await actor.setFlag(MODULE_ID, this.FLAG_KEY, notes);
+    }
+
+    return cleanedCount;
   }
 }
 

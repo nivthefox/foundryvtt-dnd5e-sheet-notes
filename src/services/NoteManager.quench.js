@@ -38,38 +38,36 @@ export function registerNoteManagerTests() {
           });
 
           describe('Initialization', function() {
-            it('should initialize empty notes array', async function() {
-              await NoteManager.initializeActor(mockActor);
+            it('should auto-initialize empty notes array on first create', async function() {
+              // Should start with no notes
+              assert.isUndefined(mockActor.getFlag(MODULE_ID, 'notes'));
 
+              // Create first note
+              await NoteManager.createNote(mockActor);
+
+              // Should now have initialized array
               const notes = mockActor.getFlag(MODULE_ID, 'notes');
               assert.isArray(notes);
-              assert.equal(notes.length, 0);
+              assert.equal(notes.length, 1);
             });
 
-            it('should not overwrite existing notes', async function() {
+            it('should not overwrite existing notes on create', async function() {
               // Set existing notes
               await mockActor.setFlag(MODULE_ID, 'notes', [{ key: 'existing' }]);
 
-              await NoteManager.initializeActor(mockActor);
+              // Create new note
+              await NoteManager.createNote(mockActor, { name: 'New Note' });
 
               const notes = mockActor.getFlag(MODULE_ID, 'notes');
-              assert.equal(notes.length, 1);
+              assert.equal(notes.length, 2);
               assert.equal(notes[0].key, 'existing');
-            });
-
-            it('should throw error if actor not provided', async function() {
-              try {
-                await NoteManager.initializeActor(null);
-                assert.fail('Should have thrown error');
-              } catch (error) {
-                assert.equal(error.message, 'Actor must be provided');
-              }
+              assert.equal(notes[1].name, 'New Note');
             });
           });
 
           describe('Create Note', function() {
-            beforeEach(async function() {
-              await NoteManager.initializeActor(mockActor);
+            beforeEach(function() {
+              // No initialization needed - will auto-init on first create
             });
 
             it('should create a new note with defaults', async function() {
@@ -114,7 +112,6 @@ export function registerNoteManagerTests() {
             let testNote;
 
             beforeEach(async function() {
-              await NoteManager.initializeActor(mockActor);
               testNote = await NoteManager.createNote(mockActor, { name: 'Test Note' });
             });
 
@@ -148,7 +145,6 @@ export function registerNoteManagerTests() {
             });
 
             it('should return all notes as plain objects', async function() {
-              await NoteManager.initializeActor(mockActor);
               await NoteManager.createNote(mockActor, { name: 'Note 1' });
               await NoteManager.createNote(mockActor, { name: 'Note 2' });
 
@@ -164,7 +160,6 @@ export function registerNoteManagerTests() {
             let testNote;
 
             beforeEach(async function() {
-              await NoteManager.initializeActor(mockActor);
               testNote = await NoteManager.createNote(mockActor, {
                 name: 'Original',
                 text: { content: '<p>Original</p>' }
@@ -199,7 +194,6 @@ export function registerNoteManagerTests() {
             let testNote;
 
             beforeEach(async function() {
-              await NoteManager.initializeActor(mockActor);
               testNote = await NoteManager.createNote(mockActor);
             });
 
@@ -225,7 +219,6 @@ export function registerNoteManagerTests() {
 
           describe('Delete All Notes', function() {
             it('should clear all notes', async function() {
-              await NoteManager.initializeActor(mockActor);
               await NoteManager.createNote(mockActor);
               await NoteManager.createNote(mockActor);
               await NoteManager.createNote(mockActor);
@@ -242,8 +235,6 @@ export function registerNoteManagerTests() {
             let mockJournal;
 
             beforeEach(async function() {
-              await NoteManager.initializeActor(mockActor);
-
               // Create mock journal page
               mockJournalPage = {
                 uuid: 'JournalEntry.abc.JournalEntryPage.def',
@@ -302,7 +293,6 @@ export function registerNoteManagerTests() {
             let note1, note2, note3;
 
             beforeEach(async function() {
-              await NoteManager.initializeActor(mockActor);
               note1 = await NoteManager.createNote(mockActor, { name: 'Note 1' });
               note2 = await NoteManager.createNote(mockActor, { name: 'Note 2' });
               note3 = await NoteManager.createNote(mockActor, { name: 'Note 3' });
@@ -346,8 +336,6 @@ export function registerNoteManagerTests() {
 
           describe('Note Count', function() {
             it('should return correct count', async function() {
-              await NoteManager.initializeActor(mockActor);
-
               assert.equal(NoteManager.getNoteCount(mockActor), 0);
 
               await NoteManager.createNote(mockActor);

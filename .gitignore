@@ -35,3 +35,7 @@ yarn-error.log*
 *.tmp
 *.temp
 .cache/
+
+# Claude AI files
+.claude/
+CLAUDE.md

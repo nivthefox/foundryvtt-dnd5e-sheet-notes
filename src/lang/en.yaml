@@ -1,0 +1,52 @@
+SHEET_NOTES:
+  TabLabel: Notes
+  
+  # Categories
+  CategoryManager: Category Manager
+  AddCategory: Add Category
+  EditCategory: Edit Category
+  DeleteCategory: Delete Category
+  CategoryName: Category Name
+  CategoryDescription: Description
+  Uncategorized: Uncategorized
+  
+  # Notes
+  AddNote: Add Note
+  EditNote: Edit Note
+  DeleteNote: Delete Note
+  NoteTitle: Note Title
+  NoteContent: Content
+  CreateNote: Create Note
+  LinkJournal: Link Journal Entry
+  
+  # Trackers
+  AddTracker: Add Tracker
+  EditTracker: Edit Tracker
+  DeleteTracker: Delete Tracker
+  TrackerName: Tracker Name
+  TrackerType: Tracker Type
+  TrackerValue: Value
+  
+  # Tracker Types
+  StringTracker: Text
+  NumberTracker: Number
+  EnumTracker: Choice
+  
+  # Tracker Configuration
+  MinValue: Minimum Value
+  MaxValue: Maximum Value
+  StepValue: Step
+  Options: Options
+  AddOption: Add Option
+  
+  # Common
+  Save: Save
+  Cancel: Cancel
+  Delete: Delete
+  Confirm: Confirm
+  
+  # Messages
+  ConfirmDelete: Are you sure you want to delete "{name}"?
+  DragJournalHere: Drag journal entries here to add them as notes
+  NoNotesYet: No notes yet. Drag a journal entry here or create a new note.
+  NoTrackersYet: No trackers yet. Click "Add Tracker" to create one.

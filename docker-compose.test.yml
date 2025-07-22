@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  foundry:
+    image: felddy/foundryvtt:12
+    environment:
+      - FOUNDRY_USERNAME=${FOUNDRY_USERNAME}
+      - FOUNDRY_PASSWORD=${FOUNDRY_PASSWORD}
+      - FOUNDRY_ADMIN_KEY=admin
+      - FOUNDRY_LICENSE_KEY=${FOUNDRY_LICENSE_KEY}
+      - FOUNDRY_WORLD=test-world
+    ports:
+      - "30000:30000"
+    volumes:
+      - .:/data/Data/modules/foundryvtt-5e-sheet-notes
+      - ./testing/test-world:/data/Data/worlds/test-world

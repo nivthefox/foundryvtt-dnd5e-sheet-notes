@@ -3,8 +3,6 @@
  * Adds a Notes tab to character sheets
  */
 
-import { NoteManager } from '../services/NoteManager.js';
-
 /**
  * Initialize the notes tab feature
  */
@@ -21,9 +19,6 @@ export function initializeNotesTab() {
  */
 async function injectNotesTab(app, html) {
   const el = html[0] || html;
-
-  // Initialize the actor's notes flag if needed
-  await NoteManager.initializeActor(app.actor);
 
   // Check if tab already exists (in case of re-render)
   if (el.querySelector('.tabs [data-tab="notes"]')) {

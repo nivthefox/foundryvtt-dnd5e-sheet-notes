@@ -5,14 +5,22 @@
 
 import { id as module_id } from '../module.json';
 import { initializeNotesTab } from './features/notes-tab';
+import { registerNoteTests } from './models/Note.quench';
+import { registerNoteManagerTests } from './services/NoteManager.quench';
 
 Hooks.once('init', () => {
-  console.log(`Initializing ${module_id}`);
+  console.debug(`Initializing ${module_id}`);
 
   // Initialize the notes tab feature
   initializeNotesTab();
+
+  // Register Quench tests if Quench module is available
+  if (game.modules.get('quench')?.active) {
+    registerNoteTests();
+    registerNoteManagerTests();
+  }
 });
 
 Hooks.once('ready', () => {
-  console.log(`${module_id} is ready`);
+  console.debug(`${module_id} is ready`);
 });

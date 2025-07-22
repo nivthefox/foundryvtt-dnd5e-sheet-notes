@@ -5,7 +5,9 @@
       "Bash(gh issue create:*)",
       "Bash(gh milestone list:*)",
       "Bash(gh issue list:*)",
-      "Bash(dir dist)"
+      "Bash(dir dist)",
+      "WebFetch(domain:foundryvtt.com)",
+      "Bash(gh issue view:*)"
     ],
     "deny": []
   }

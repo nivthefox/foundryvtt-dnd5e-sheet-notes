@@ -290,7 +290,7 @@ export function registerNoteManagerTests() {
           });
 
           describe('Reorder Notes', function() {
-            let note1, note2, note3;
+            let note1; let note2; let note3;
 
             beforeEach(async function() {
               note1 = await NoteManager.createNote(mockActor, { name: 'Note 1' });

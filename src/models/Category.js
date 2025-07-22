@@ -8,8 +8,6 @@ export class Category {
     const defaults = {
       key: foundry.utils.randomID(),
       name: 'New Category',
-      backgroundColor: '#4a90e2',
-      textColor: '#ffffff',
       ordering: 'alphabetical' // How notes within this category are sorted
     };
 
@@ -19,8 +17,6 @@ export class Category {
     // Assign properties
     this.key = categoryData.key;
     this.name = categoryData.name;
-    this.backgroundColor = categoryData.backgroundColor;
-    this.textColor = categoryData.textColor;
     this.ordering = categoryData.ordering;
 
     this.validate();
@@ -38,8 +34,6 @@ export class Category {
 
     // Update properties
     this.name = mergedData.name;
-    this.backgroundColor = mergedData.backgroundColor;
-    this.textColor = mergedData.textColor;
     this.ordering = mergedData.ordering;
 
     this.validate();
@@ -54,8 +48,6 @@ export class Category {
     return {
       key: this.key,
       name: this.name,
-      backgroundColor: this.backgroundColor,
-      textColor: this.textColor,
       ordering: this.ordering
     };
   }
@@ -86,15 +78,6 @@ export class Category {
     }
     if (this.name.length > 50) {
       throw new Error('Category name must not exceed 50 characters');
-    }
-
-    // Color validation
-    const hexColorRegex = /^#[0-9A-Fa-f]{6}$/;
-    if (!hexColorRegex.test(this.backgroundColor)) {
-      throw new Error('Background color must be a valid hex color (#RRGGBB)');
-    }
-    if (!hexColorRegex.test(this.textColor)) {
-      throw new Error('Text color must be a valid hex color (#RRGGBB)');
     }
 
     // Ordering validation - controls how notes within this category are sorted

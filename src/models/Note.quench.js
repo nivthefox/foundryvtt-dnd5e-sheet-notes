@@ -312,7 +312,7 @@ export function registerNoteTests() {
               },
               flags: {
                 [MODULE_ID]: { category: 'test' },
-                'custom': { data: 'preserved' }
+                custom: { data: 'preserved' }
               }
             });
 
@@ -325,7 +325,7 @@ export function registerNoteTests() {
                 assert.equal(data[0].sort, 75000);
                 assert.equal(data[0].text.content, '<p>Note content</p>');
                 assert.equal(data[0].flags[MODULE_ID].category, 'test');
-                assert.equal(data[0].flags['custom'].data, 'preserved');
+                assert.equal(data[0].flags.custom.data, 'preserved');
 
                 // Return mock created page
                 return [{ id: 'created-page', ...data[0] }];

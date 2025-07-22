@@ -1,0 +1,36 @@
+<form class="editable" autocomplete="off">
+    <fieldset>
+        <div class="form-group">
+            <label>{{ localize "sheet-notes.category.fields.name" }}</label>
+            <div class="form-fields">
+                <input type="text" name="name" placeholder="{{ localize "sheet-notes.category.fields.name" }}"
+                       value="{{category.name}}"
+                    {{#if isNotesCategory}}disabled{{/if}}
+                    {{#unless isEditMode}}autofocus required{{/unless}}>
+            </div>
+        </div>
+
+        <div class="form-group stacked checkbox-grid checkbox-grid-2">
+            <label>{{ localize "sheet-notes.category.fields.ordering" }}</label>
+            <div class="form-fields">
+                <label class="checkbox">
+                    <input type="radio" name="ordering" value="alphabetical"{{#if (eq category.ordering "alphabetical")}}checked{{/if}}>
+                    <span>{{ localize "sheet-notes.category.ordering.alphabetical" }}</span>
+                </label>
+                <label class="checkbox">
+                    <input type="radio" name="ordering" value="manual" {{#if (eq category.ordering "manual")}}checked{{/if}}>
+                    <span>{{ localize "sheet-notes.category.ordering.manual" }}</span>
+                </label>
+
+            </div>
+        </div>
+        <button type="button" class="dialog-button yes default bright" data-action="save">
+            <i class="fas fa-check"></i>
+            {{#if isEditMode}}
+                {{ localize "sheet-notes.common.save" }}
+            {{else}}
+                {{ localize "sheet-notes.category.editor.title.create" }}
+            {{/if}}
+        </button>
+    </fieldset>
+</form>

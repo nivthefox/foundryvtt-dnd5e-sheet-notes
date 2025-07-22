@@ -1,0 +1,53 @@
+<div class="tab notes {{#if active}}active{{/if}}" data-group="primary" data-tab="notes">
+  <div class="top">
+    <div class="actions">
+      <button type="button" class="add-category gold-button" data-action="add-category" title="{{ localize "sheet-notes.category.add" }}">
+        <i class="fas fa-folder-plus"></i>
+      </button>
+    </div>
+  </div>
+
+  <section class="items-list notes-list">
+    {{#each categories}}
+    <div class="items-section card" data-category-id="{{this.key}}">
+      <div class="items-header header">
+        <h3 class="item-name">{{this.name}}</h3>
+        <div class="item-header item-controls">
+          <a class="item-control item-action" data-action="edit-category" data-category-id="{{this.key}}" 
+             title="{{ localize "sheet-notes.category.edit" }}" aria-label="{{ localize "sheet-notes.category.edit" }}">
+            <i class="fas fa-edit"></i>
+          </a>
+          {{#unless this.isDefault}}
+          <a class="item-control item-action" data-action="delete-category" data-category-id="{{this.key}}" 
+             title="{{ localize "sheet-notes.category.delete" }}" aria-label="{{ localize "sheet-notes.category.delete" }}">
+            <i class="fas fa-trash"></i>
+          </a>
+          {{/unless}}
+        </div>
+      </div>
+      
+      <ol class="item-list unlist">
+        {{#if this.pages}}
+          {{#each this.pages}}
+          <li class="item" data-page-id="{{this.id}}">
+            <div class="item-row" draggable="true">
+              <div class="item-name">
+                <a class="content-link" data-uuid="{{this.uuid}}">
+                  <i class="fas fa-file-alt"></i>
+                  <span class="name">{{this.name}}</span>
+                </a>
+              </div>
+              <div class="item-detail item-controls">
+                <a class="item-control" data-action="remove-page" aria-label="Remove from category">
+                  <i class="fas fa-times"></i>
+                </a>
+              </div>
+            </div>
+          </li>
+          {{/each}}
+        {{/if}}
+      </ol>
+    </div>
+    {{/each}}
+  </section>
+</div>

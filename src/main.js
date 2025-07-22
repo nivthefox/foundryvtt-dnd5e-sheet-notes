@@ -3,7 +3,6 @@
  * Main module entry point
  */
 
-import { id as module_id } from '../module.json';
 import { initializeNotesTab } from './features/notes-tab';
 import { registerNoteTests } from './models/Note.quench';
 import { registerNoteManagerTests } from './services/NoteManager.quench';
@@ -11,8 +10,6 @@ import { registerCategoryTests } from './models/Category.quench';
 import { registerCategoryManagerTests } from './services/CategoryManager.quench';
 
 Hooks.once('init', () => {
-  console.debug(`Initializing ${module_id}`);
-
   // Initialize the notes tab feature
   initializeNotesTab();
 
@@ -23,8 +20,4 @@ Hooks.once('init', () => {
     registerCategoryTests();
     registerCategoryManagerTests();
   }
-});
-
-Hooks.once('ready', () => {
-  console.debug(`${module_id} is ready`);
 });

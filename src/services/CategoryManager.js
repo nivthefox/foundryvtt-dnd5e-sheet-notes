@@ -150,12 +150,6 @@ export class CategoryManager {
     if (!categoryKey) throw new Error('Category key must be provided');
 
     const categories = actor.getFlag(MODULE_ID, this.FLAG_KEY) || [];
-
-    // Prevent deleting the last category
-    if (categories.length <= 1) {
-      throw new Error('Cannot delete the last category');
-    }
-
     const filteredCategories = categories.filter(c => c.key !== categoryKey);
 
     if (filteredCategories.length === categories.length) {

@@ -81,8 +81,6 @@ export function registerCategoryManagerTests() {
               const category = await CategoryManager.createCategory(mockActor);
 
               assert.equal(category.name, 'New Category');
-              assert.equal(category.backgroundColor, '#4a90e2');
-              assert.equal(category.textColor, '#ffffff');
               assert.equal(category.ordering, 'alphabetical');
             });
 
@@ -206,8 +204,6 @@ export function registerCategoryManagerTests() {
             beforeEach(async function() {
               const category = await CategoryManager.createCategory(mockActor, {
                 name: 'Original',
-                backgroundColor: '#ff0000',
-                textColor: '#ffffff',
                 ordering: 'alphabetical'
               });
               categoryKey = category.key;
@@ -219,18 +215,15 @@ export function registerCategoryManagerTests() {
               });
 
               assert.equal(updated.name, 'Updated');
-              assert.equal(updated.backgroundColor, '#ff0000'); // Others unchanged
             });
 
             it('should update multiple properties', async function() {
               const updated = await CategoryManager.updateCategory(mockActor, categoryKey, {
                 name: 'New Name',
-                backgroundColor: '#00ff00',
                 ordering: 'manual'
               });
 
               assert.equal(updated.name, 'New Name');
-              assert.equal(updated.backgroundColor, '#00ff00');
               assert.equal(updated.ordering, 'manual');
             });
 
@@ -268,7 +261,7 @@ export function registerCategoryManagerTests() {
           });
 
           describe('deleteCategory', function() {
-            let cat1Key, cat2Key;
+            let cat1Key; let cat2Key;
 
             beforeEach(async function() {
               const cat1 = await CategoryManager.createCategory(mockActor, { name: 'Cat1' });

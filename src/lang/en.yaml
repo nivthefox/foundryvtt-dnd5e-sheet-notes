@@ -1,52 +1,36 @@
 sheet-notes:
   tab-label: Notes
   
-  # Categories
-  CategoryManager: Category Manager
-  AddCategory: Add Category
-  EditCategory: Edit Category
-  DeleteCategory: Delete Category
-  CategoryName: Category Name
-  CategoryDescription: Description
-  Uncategorized: Uncategorized
+  category:
+    add: Add Category
+    edit: Edit Category  
+    delete: Delete Category
+    empty: No pages in this category yet
+    confirm-delete: "Are you sure you want to delete the category '{name}'? All pages in this category will be moved to the default category."
+    
+    editor:
+      title:
+        create: Create Category
+        edit: Edit Category
+    
+    fields:
+      name: Name
+      ordering: Ordering
+      
+    ordering:
+      alphabetical: Alphabetical
+      manual: Manual
+      
+    notifications:
+      created: 'Category "{name}" created successfully'
+      updated: 'Category "{name}" updated successfully'
+      deleted: 'Category "{name}" deleted successfully'
+      
+    errors:
+      name-required: Category name is required
+      name-too-long: Category name must be 50 characters or less
+      name-exists: 'A category named "{name}" already exists'
   
-  # Notes
-  AddNote: Add Note
-  EditNote: Edit Note
-  DeleteNote: Delete Note
-  NoteTitle: Note Title
-  NoteContent: Content
-  CreateNote: Create Note
-  LinkJournal: Link Journal Entry
-  
-  # Trackers
-  AddTracker: Add Tracker
-  EditTracker: Edit Tracker
-  DeleteTracker: Delete Tracker
-  TrackerName: Tracker Name
-  TrackerType: Tracker Type
-  TrackerValue: Value
-  
-  # Tracker Types
-  StringTracker: Text
-  NumberTracker: Number
-  EnumTracker: Choice
-  
-  # Tracker Configuration
-  MinValue: Minimum Value
-  MaxValue: Maximum Value
-  StepValue: Step
-  Options: Options
-  AddOption: Add Option
-  
-  # Common
-  Save: Save
-  Cancel: Cancel
-  Delete: Delete
-  Confirm: Confirm
-  
-  # Messages
-  ConfirmDelete: Are you sure you want to delete "{name}"?
-  DragJournalHere: Drag journal entries here to add them as notes
-  NoNotesYet: No notes yet. Drag a journal entry here or create a new note.
-  NoTrackersYet: No trackers yet. Click "Add Tracker" to create one.
+  common:
+    save: Save
+    cancel: Cancel

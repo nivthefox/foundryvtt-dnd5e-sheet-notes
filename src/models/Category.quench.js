@@ -17,24 +17,18 @@ export function registerCategoryTests() {
 
             assert.isString(category.key);
             assert.equal(category.name, 'New Category');
-            assert.equal(category.backgroundColor, '#4a90e2');
-            assert.equal(category.textColor, '#ffffff');
             assert.equal(category.ordering, 'alphabetical');
           });
 
           it('should create category with provided data', function() {
             const data = {
               name: 'Combat',
-              backgroundColor: '#ff0000',
-              textColor: '#000000',
               ordering: 'manual'
             };
 
             const category = new Category(data);
 
             assert.equal(category.name, 'Combat');
-            assert.equal(category.backgroundColor, '#ff0000');
-            assert.equal(category.textColor, '#000000');
             assert.equal(category.ordering, 'manual');
           });
 
@@ -56,8 +50,6 @@ export function registerCategoryTests() {
           this.beforeEach(function() {
             category = new Category({
               name: 'Original',
-              backgroundColor: '#0000ff',
-              textColor: '#ffffff',
               ordering: 'alphabetical'
             });
           });
@@ -67,15 +59,6 @@ export function registerCategoryTests() {
             assert.equal(category.name, 'Updated');
           });
 
-          it('should update colors', function() {
-            category.update({
-              backgroundColor: '#00ff00',
-              textColor: '#000000'
-            });
-
-            assert.equal(category.backgroundColor, '#00ff00');
-            assert.equal(category.textColor, '#000000');
-          });
 
           it('should update ordering', function() {
             category.update({ ordering: 'manual' });
@@ -85,12 +68,10 @@ export function registerCategoryTests() {
           it('should update multiple properties', function() {
             category.update({
               name: 'New Name',
-              backgroundColor: '#123456',
               ordering: 'manual'
             });
 
             assert.equal(category.name, 'New Name');
-            assert.equal(category.backgroundColor, '#123456');
             assert.equal(category.ordering, 'manual');
           });
 
@@ -121,39 +102,6 @@ export function registerCategoryTests() {
             }, 'Category name must not exceed 50 characters');
           });
 
-          it('should validate color formats', function() {
-            // Invalid background colors
-            assert.throws(() => {
-              new Category({ backgroundColor: 'red' });
-            }, 'Background color must be a valid hex color (#RRGGBB)');
-
-            assert.throws(() => {
-              new Category({ backgroundColor: '#ff' });
-            }, 'Background color must be a valid hex color (#RRGGBB)');
-
-            assert.throws(() => {
-              new Category({ backgroundColor: '#gggggg' });
-            }, 'Background color must be a valid hex color (#RRGGBB)');
-
-            // Invalid text colors
-            assert.throws(() => {
-              new Category({ textColor: '000000' });
-            }, 'Text color must be a valid hex color (#RRGGBB)');
-
-            assert.throws(() => {
-              new Category({ textColor: '#12345' });
-            }, 'Text color must be a valid hex color (#RRGGBB)');
-          });
-
-          it('should accept valid hex colors', function() {
-            const category = new Category({
-              backgroundColor: '#FF00AA',
-              textColor: '#123abc'
-            });
-
-            assert.equal(category.backgroundColor, '#FF00AA');
-            assert.equal(category.textColor, '#123abc');
-          });
 
           it('should validate ordering values', function() {
             assert.throws(() => {
@@ -179,8 +127,6 @@ export function registerCategoryTests() {
           it('should export category data', function() {
             const category = new Category({
               name: 'Export Test',
-              backgroundColor: '#123456',
-              textColor: '#abcdef',
               ordering: 'manual'
             });
 
@@ -188,8 +134,6 @@ export function registerCategoryTests() {
 
             assert.isString(obj.key);
             assert.equal(obj.name, 'Export Test');
-            assert.equal(obj.backgroundColor, '#123456');
-            assert.equal(obj.textColor, '#abcdef');
             assert.equal(obj.ordering, 'manual');
           });
 
@@ -200,7 +144,7 @@ export function registerCategoryTests() {
             const obj = category.toObject();
 
             assert.isUndefined(obj.extraProp);
-            assert.hasAllKeys(obj, ['key', 'name', 'backgroundColor', 'textColor', 'ordering']);
+            assert.hasAllKeys(obj, ['key', 'name', 'ordering']);
           });
         });
 
@@ -208,8 +152,6 @@ export function registerCategoryTests() {
           it('should create independent copy with new key', function() {
             const original = new Category({
               name: 'Original',
-              backgroundColor: '#ff0000',
-              textColor: '#000000',
               ordering: 'manual'
             });
 
@@ -217,8 +159,6 @@ export function registerCategoryTests() {
 
             assert.notEqual(clone.key, original.key);
             assert.equal(clone.name, 'Original');
-            assert.equal(clone.backgroundColor, '#ff0000');
-            assert.equal(clone.textColor, '#000000');
             assert.equal(clone.ordering, 'manual');
 
             // Verify independence

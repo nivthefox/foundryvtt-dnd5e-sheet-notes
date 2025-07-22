@@ -3,16 +3,16 @@
  * Main module entry point
  */
 
-const MODULE_ID = 'foundryvtt-5e-sheet-notes';
+import { id as module_id } from '../module.json';
+import { initializeNotesTab } from './features/notes-tab';
 
 Hooks.once('init', () => {
-  console.log(`Initializing ${MODULE_ID}`);
-  
-  // Module initialization will go here
+  console.log(`Initializing ${module_id}`);
+
+  // Initialize the notes tab feature
+  initializeNotesTab();
 });
 
 Hooks.once('ready', () => {
-  console.log(`${MODULE_ID} is ready`);
+  console.log(`${module_id} is ready`);
 });
-
-export { MODULE_ID };

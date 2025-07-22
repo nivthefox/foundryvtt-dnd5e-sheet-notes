@@ -1,5 +1,5 @@
-SHEET_NOTES:
-  TabLabel: Notes
+sheet-notes:
+  tab-label: Notes
   
   # Categories
   CategoryManager: Category Manager

@@ -163,8 +163,8 @@ export class CategoryEditor extends foundry.applications.api
   static async show(actor, category = null) {
     const editor = new CategoryEditor(actor, category);
     await editor.render(true);
-    editor.element.querySelector('button.yes')?.
-      addEventListener('click', async event => {
+    editor.element.querySelector('button.yes')
+      ?.addEventListener('click', async event => {
         event.preventDefault();
         await CategoryEditor.#onSave.call(editor, event, event.currentTarget);
       });
@@ -172,7 +172,7 @@ export class CategoryEditor extends foundry.applications.api
       event.preventDefault();
       await CategoryEditor.#onSave.call(editor, event, event.currentTarget);
     });
-    
+
     // Prevent Enter key from submitting form in input fields
     editor.element.querySelectorAll('input[type="text"]').forEach(input => {
       input.addEventListener('keydown', async event => {

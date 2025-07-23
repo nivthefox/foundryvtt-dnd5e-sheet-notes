@@ -1,0 +1,23 @@
+<li class="item" data-note-key="{{key}}" data-note-name="{{name}}">
+  <div class="item-row" draggable="true">
+    <div class="item-name item-action" role="button" data-action="open-note" aria-label="{{name}}">
+      <i class="item-image fas fa-file-alt"></i>
+      <div class="name name-stacked">
+        <span class="title">{{name}}</span>
+      </div>
+    </div>
+    <div class="item-detail item-controls">
+      {{#if @root.editable}}
+      <a class="item-control" data-action="edit-note" aria-label="Edit Note">
+        <i class="fas fa-edit"></i>
+      </a>
+      <a class="item-control" data-action="delete-note" data-note-key="{{key}}" aria-label="Delete Note">
+        <i class="fas fa-trash"></i>
+      </a>
+      {{/if}}
+      <a class="item-control" data-context-menu="" aria-label="Additional Controls">
+        <i class="fas fa-ellipsis-vertical"></i>
+      </a>
+    </div>
+  </div>
+</li>

@@ -12,6 +12,22 @@
   }
 }
 
+.dnd5e2.sheet:is(.actor) form:not(.tab-notes) .create-child:is(.sheet-notes) {
+  display: none;
+}
+
+.dnd5e2.sheet:is(.actor) form:is(.tab-notes) .create-child:is(.sheet-notes) {
+  display: block;
+  
+  &.add-note {
+    right: 56px;
+  }
+  
+  &.add-category {
+    right: 16px;
+  }
+}
+
 /* Category Editor styles */
 .category-editor {
   /* Standardize form-group heights */

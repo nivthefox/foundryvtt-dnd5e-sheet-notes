@@ -31,6 +31,13 @@ sheet-notes:
       name-too-long: Category name must be 50 characters or less
       name-exists: 'A category named "{name}" already exists'
   
+  note:
+    delete: Delete Note
+    confirm-delete: "Are you sure you want to delete the note '{name}'?"
+    
+    notifications:
+      deleted: 'Note "{name}" deleted successfully'
+  
   common:
     save: Save
     cancel: Cancel

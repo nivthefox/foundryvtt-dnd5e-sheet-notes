@@ -1,0 +1,21 @@
+<form class="{{classes}}">
+  <header class="note-header">
+    {{#if isEditMode}}
+      <input type="text" name="name" value="{{note.name}}" placeholder="{{ localize 'sheet-notes.note.fields.title' }}" class="note-title">
+    {{else}}
+      <h2 class="note-title">{{note.name}}</h2>
+    {{/if}}
+  </header>
+
+  <div class="note-content card">
+    {{#if isEditMode}}
+      <prose-mirror class="editor-content" name="{{editorTarget}}" value="{{note.text.content}}">
+        {{{ enrichedContent }}}
+      </prose-mirror>
+    {{else}}
+      <div class="editor-content">
+        {{{ enrichedContent }}}
+      </div>
+    {{/if}}
+  </div>
+</form>

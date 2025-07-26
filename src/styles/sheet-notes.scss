@@ -1,5 +1,90 @@
 /* 5e Sheet Notes & Trackers Styles */
 
+/* Note Viewer styles - minimal, leveraging D&D 5e styles */
+.note-viewer {
+  form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .note-header {
+    padding: 1rem;
+    
+    .note-title {
+      margin: 0;
+      text-align: center;
+      font-size: var(--font-size-32);
+      font-family: var(--dnd5e-font-modesto);
+      font-weight: bold;
+      
+      &:is(input) {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  }
+  
+  .note-content {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    
+    prose-mirror,
+    .editor {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .editor.prosemirror {
+      .editor-content {
+        position: unset;
+        min-height: 300px;
+        flex: 1;
+      }
+    }
+  }
+}
+
+/* Slide toggle styles for note viewer */
+.dnd5e2.sheet-notes > header > slide-toggle {
+  --slide-toggle-track-color-checked: var(--dnd5e-color-gold);
+  --slide-toggle-track-color-unchecked: var(--dnd5e-color-light-gray);
+  flex: none;
+}
+
+.dnd5e2.sheet-notes > header > slide-toggle .slide-toggle-thumb {
+  line-height: 12px;
+}
+
+.dnd5e2.sheet-notes > header > slide-toggle .slide-toggle-thumb::before {
+  content: "\f0ad";
+  font-family: var(--font-awesome);
+  color: var(--dnd5e-color-light-gray);
+  font-weight: bold;
+  font-size: var(--font-size-9);
+}
+
+.dnd5e2.sheet-notes > header > slide-toggle[checked] .slide-toggle-thumb::before {
+  color: var(--dnd5e-color-gold);
+}
+
+.dnd5e2.sheet-notes.minimized slide-toggle {
+  display: none;
+}
+
+/* Hide the window title h4 in note viewer */
+.dnd5e2.sheet-notes > header .window-title {
+  visibility: hidden;
+  flex: 1; /* Make it take up the space between slider and close button */
+}
+
+/* Hide the window icon in note viewer */
+.dnd5e2.sheet-notes > header .window-icon {
+  visibility: hidden;
+}
+
 /* Notes tab styles */
 .tab.notes {
   .top {
@@ -8,6 +93,23 @@
       display: grid;
       justify-content: end;
       margin-bottom: 0.5rem;
+    }
+  }
+
+  .items-section .item .item-row {
+    padding-left: 0.5rem;
+  }
+  
+  /* Note item styling */
+  .item-name {
+    .name-stacked {
+      .title {
+        font-size: var(--font-size-13);
+        font-weight: bold;
+        font-family: var(--dnd5e-font-roboto-slab);
+        transition: text-shadow 250ms ease;
+        color: rgb(207, 210, 218);
+      }
     }
   }
 }

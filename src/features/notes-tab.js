@@ -4,6 +4,7 @@
  */
 
 import { CategoryEditor } from '../ui/CategoryEditor';
+import { NoteViewer } from '../ui/NoteViewer';
 import { CategoryManager } from '../services/CategoryManager';
 import { NoteManager } from '../services/NoteManager';
 
@@ -36,7 +37,7 @@ export function initializeNotesTab() {
 async function addNotes(app, html, _data) {
   // Normalize to DOM element - could be the whole app or just the form
   const el = html[0] || html;
-  
+
   // Ensure we have the application root element, not just the form
   const root = el.closest('.app') || el.querySelector('.app') || el;
 
@@ -46,10 +47,10 @@ async function addNotes(app, html, _data) {
 
   // Add the tab content
   await addNotesContent(app, root);
-  
+
   // Add the tab navigation button
   addNotesTab(root);
-  
+
   // Add the action buttons
   addNotesButtons(app, root);
 }
@@ -68,10 +69,10 @@ async function addNotesContent(app, el) {
 
   // Check if Notes tab content already exists
   let notesContent = tabBody.querySelector('.tab.notes[data-tab="notes"]');
-  
+
   if (!notesContent) {
     const active = app._tabs?.[0]?.active === 'notes';
-    
+
     // Build the template data
     const templateData = await getNotesTabData(app.actor, active, app._mode);
 
@@ -250,8 +251,7 @@ function activateNotesListeners(actor, app, container) {
       event.preventDefault();
       event.stopPropagation();
       const noteKey = event.currentTarget.closest('[data-note-key]').dataset.noteKey;
-      // TODO: Implement NoteViewer to open the note
-      console.log('Opening note:', noteKey);
+      NoteViewer.show(actor, noteKey);
     });
   });
 
@@ -261,8 +261,7 @@ function activateNotesListeners(actor, app, container) {
       event.preventDefault();
       event.stopPropagation();
       const noteKey = event.currentTarget.closest('[data-note-key]').dataset.noteKey;
-      // TODO: Implement NoteViewer to edit the note
-      console.log('Editing note:', noteKey);
+      NoteViewer.show(actor, noteKey);
     });
   });
 
@@ -347,8 +346,48 @@ function addNotesButtons(app, html) {
   addNoteBtn.title = 'Add Note';
   addNoteBtn.addEventListener('click', async event => {
     event.preventDefault();
-    // TODO: Implement add note functionality
-    console.log('Add Note clicked');
+
+    // Create a new note
+    const noteName = await foundry.applications.api.DialogV2.prompt({
+      window: {
+        title: game.i18n.localize('sheet-notes.note.create'),
+        icon: 'fas fa-file-alt'
+      },
+      position: {
+        width: 400
+      },
+      content: `
+        <div class="form-group">
+          <label>${game.i18n.localize('sheet-notes.note.fields.title')}</label>
+          <input type="text" name="name" autofocus>
+        </div>
+      `,
+      ok: {
+        label: game.i18n.localize('sheet-notes.common.create'),
+        callback: (event, button, dialog) => {
+          return button.form.elements.name.value;
+        }
+      }
+    });
+
+    if (noteName) {
+      try {
+        const note = await NoteManager.createNote(app.actor, {
+          name: noteName.trim(),
+          content: ''
+        });
+
+        // Open the new note for editing
+        const viewer = await NoteViewer.show(app.actor, note.key);
+        if (viewer) {
+          // Switch to edit mode
+          viewer._mode = 2;
+          await viewer.render();
+        }
+      } catch (error) {
+        ui.notifications.error(error.message);
+      }
+    }
   });
 
   // Add Category button

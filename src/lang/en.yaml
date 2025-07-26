@@ -32,12 +32,26 @@ sheet-notes:
       name-exists: 'A category named "{name}" already exists'
   
   note:
+    create: Create Note
     delete: Delete Note
     confirm-delete: "Are you sure you want to delete the note '{name}'?"
     
+    fields:
+      title: Note Title
+    
+    viewer:
+      title: "{name}"
+      unsaved-title: Unsaved Changes
+      unsaved-content: You have unsaved changes. Do you want to save before closing?
+    
     notifications:
       deleted: 'Note "{name}" deleted successfully'
+      saved: Note saved successfully
+    
+    errors:
+      not-found: Note not found
   
   common:
     save: Save
     cancel: Cancel
+    create: Create

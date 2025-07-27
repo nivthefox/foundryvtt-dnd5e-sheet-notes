@@ -18,3 +18,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Basic SCSS stylesheet structure
 - English language file (YAML source)
 - GitHub Actions workflow for automated releases
+- Fix workflow permissions for release updates

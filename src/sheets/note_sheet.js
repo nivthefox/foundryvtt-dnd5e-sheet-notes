@@ -12,6 +12,6 @@ export class NoteSheet extends dnd5e.applications.item.ItemSheet5e2 {
   }
 
   get template() {
-    return "modules/dnd5e-sheet-notes/templates/note-sheet.hbs";
+    return "modules/dnd5e-sheet-notes/templates/note_sheet.hbs";
   }
 }

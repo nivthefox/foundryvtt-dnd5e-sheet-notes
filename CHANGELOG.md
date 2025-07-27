@@ -16,3 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Notes tab on character sheets
   - Appears on both PC and NPC character sheets
   - Uses fa-book-open icon to match Foundry's Journal interface
+- Category management system
+  - Create, edit, and delete note categories
+  - Default "Notes" category that cannot be deleted
+  - Alphabetical and manual ordering options
+  - Categories stored as actor flags
+  - Empty categories hidden except in edit mode
+  - D&D 5e styled radio buttons for ordering selection

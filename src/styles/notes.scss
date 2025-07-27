@@ -19,3 +19,125 @@
     display: none;
   }
 }
+
+/* Notes tab styles */
+.tab.notes {
+  .top {
+    /* Actions container - use grid to push button to the right */
+    .actions {
+      display: grid;
+      justify-content: end;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .items-section .item .item-row {
+    padding-left: 0.5rem;
+  }
+  
+  /* Fix width issues on NPC sheets */
+  .items-list {
+    width: 100%;
+    
+    .items-section {
+      width: 100%;
+      
+      .item-list {
+        width: 100%;
+        
+        .item {
+          width: 100%;
+          
+          .item-row {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+        }
+      }
+    }
+  }
+  
+  /* Hide empty categories by default, except when sheet is editable or actively dragging */
+  .items-section:not(:has(.item)) {
+    display: none;
+  }
+  
+  /* Show empty categories when sheet is in edit mode */
+  form.editable & .items-section:not(:has(.item)),
+  form[data-mode="edit"] & .items-section:not(:has(.item)),
+  .sheet.editable & .items-section:not(:has(.item)) {
+    display: block;
+  }
+  
+  /* Show empty categories when actively dragging */
+  &.dragging-active .items-section:not(:has(.item)) {
+    display: block;
+  }
+}
+
+.dnd5e2.sheet:is(.actor) form:not(.tab-notes) .create-child:is(.dnd5e-sheet-notes) {
+  display: none;
+}
+
+.dnd5e2.sheet:is(.actor) form:is(.tab-notes) .create-child:is(.dnd5e-sheet-notes) {
+  display: block;
+  
+  &.add-category {
+    right: 16px;
+  }
+}
+
+/* Category Editor styles */
+.category-editor {
+  /* Standardize form-group heights */
+  .form-group {
+    min-height: 40px;
+    
+    .form-fields {
+      display: flex;
+      align-items: center;
+      min-height: 28px; /* Account for label height */
+    }
+  }
+
+  /* Style radio buttons to match D&D 5e proficiency cycle style */
+  label.checkbox {
+    input[type="radio"] {
+      position: absolute;
+      top: -100px;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+    }
+    
+    /* Create the circular visual element */
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    
+    &::before {
+      content: "";
+      position: relative;
+      display: block;
+      width: 9px;
+      height: 9px;
+      border: 1px solid var(--dnd5e-color-gold);
+      border-radius: 100%;
+      flex-shrink: 0;
+    }
+    
+    /* Fill the circle when radio is checked */
+    &:has(input:checked)::before {
+      background: var(--dnd5e-color-gold);
+    }
+    
+    /* Hover effect */
+    &:hover::before {
+      box-shadow: 0 0 3px var(--dnd5e-color-gold);
+    }
+  }
+}

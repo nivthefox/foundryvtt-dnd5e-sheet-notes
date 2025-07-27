@@ -3,9 +3,9 @@
  * A FoundryVTT module for D&D 5th Edition character sheet notes
  */
 
-import { NoteModel } from './models/NoteModel.js';
-import { NoteSheet } from './sheets/NoteSheet.js';
-import { initializeNotesTab } from './sheets/notes-tab.js';
+import { NoteModel } from './models/note_model';
+import { NoteSheet } from './sheets/note_sheet';
+import { initializeNotesTab } from './sheets/notes_tab';
 
 Hooks.once('init', () => {
   console.log('5e Sheet Notes & Trackers | Module initialized');

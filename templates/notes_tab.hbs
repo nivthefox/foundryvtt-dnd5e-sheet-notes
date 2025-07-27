@@ -1,0 +1,31 @@
+<div class="tab notes {{#if active}}active{{/if}}" data-group="primary" data-tab="notes">
+  <section class="items-list notes-list">
+    {{#each categories}}
+    <div class="items-section card" data-category-id="{{this.key}}">
+      <div class="items-header header">
+        <h3 class="item-name">{{this.name}}</h3>
+        <div class="item-header item-controls">
+          {{#if @root.editable}}
+            {{#unless this.isDefault}}
+            <a class="item-control item-action" data-action="edit-category" data-category-id="{{this.key}}" 
+               title="{{ localize "dnd5e-sheet-notes.category.edit" }}" aria-label="{{ localize "dnd5e-sheet-notes.category.edit" }}">
+              <i class="fas fa-edit"></i>
+            </a>
+            <a class="item-control item-action" data-action="delete-category" data-category-id="{{this.key}}" 
+               title="{{ localize "dnd5e-sheet-notes.category.delete" }}" aria-label="{{ localize "dnd5e-sheet-notes.category.delete" }}">
+              <i class="fas fa-trash"></i>
+            </a>
+            {{/unless}}
+          {{/if}}
+        </div>
+      </div>
+      
+      <ol class="item-list unlist">
+        {{#each notes}}
+          <!-- Note items will be added here when we implement note management -->
+        {{/each}}
+      </ol>
+    </div>
+    {{/each}}
+  </section>
+</div>

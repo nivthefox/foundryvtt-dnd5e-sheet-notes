@@ -16,6 +16,11 @@ const SHEET_MODES = {
  * Initialize the notes tab feature
  */
 export function initializeNotesTab() {
+  // Register the partial template
+  loadTemplates([
+    'modules/dnd5e-sheet-notes/templates/partials/note_item.hbs'
+  ]);
+
   // Register hooks for both PC and NPC sheets
   Hooks.on('renderActorSheet5eCharacter2', addNotes);
   Hooks.on('renderActorSheet5eNPC2', addNotes);
@@ -131,12 +136,34 @@ async function getNotesTabData(actor, active, mode) {
   // Sort categories alphabetically
   categories.sort((a, b) => a.name.localeCompare(b.name));
 
-  // Build category data (without notes for now)
+  // Get all Note items from the actor
+  const allNotes = actor.items.filter(item => item.type === 'dnd5e-sheet-notes.note');
+
+  // Build category data with their associated notes
   const categoryData = categories.map(category => {
+    // Filter notes for this category
+    const categoryNotes = allNotes.filter(note => {
+      const noteCategory = note.system.category;
+      // Uncategorized notes (empty string, null, or undefined) go to default "Notes" category
+      if (!noteCategory || noteCategory === "") {
+        return category.key === 'default-notes' || category.name === 'Notes';
+      }
+      return noteCategory === category.key;
+    });
+
+    // Sort notes based on category ordering preference
+    const notes = categoryNotes.sort((a, b) => {
+      if (category.ordering === 0) { // ALPHABETICAL
+        return a.name.localeCompare(b.name);
+      }
+      // MANUAL ordering would use sort field when we implement drag & drop
+      return (a.sort || 0) - (b.sort || 0);
+    });
+
     return {
       ...category,
       isDefault: category.name === 'Notes' || category.key === 'default-notes',
-      notes: [], // Empty for now since we don't have note management yet
+      notes,
       active: active || false,
     };
   });
@@ -186,29 +213,100 @@ function activateNotesListeners(actor, app, container) {
       if (!category) return;
 
       // Confirm deletion using DialogV2
-      const confirm = await foundry.applications.api.DialogV2.confirm({
-        window: {
-          title: game.i18n.localize('dnd5e-sheet-notes.category.delete'),
-          icon: 'fas fa-trash'
-        },
-        position: {
-          width: 400
-        },
-        content: game.i18n.format('dnd5e-sheet-notes.category.confirm-delete', { name: category.name }),
-        yes: {
-          label: 'Yes',
-          icon: 'fas fa-check'
-        },
-        no: {
-          label: 'No',
-          icon: 'fas fa-times'
-        }
-      });
+      try {
+        const confirm = await foundry.applications.api.DialogV2.confirm({
+          window: {
+            title: game.i18n.localize('dnd5e-sheet-notes.category.delete'),
+            icon: 'fas fa-trash'
+          },
+          position: {
+            width: 400
+          },
+          content: game.i18n.format('dnd5e-sheet-notes.category.confirm-delete', { name: category.name }),
+          yes: {
+            label: 'Yes',
+            icon: 'fas fa-check'
+          },
+          no: {
+            label: 'No',
+            icon: 'fas fa-times'
+          }
+        });
 
-      if (confirm) {
-        try {
+        if (confirm) {
           await CategoryManager.deleteCategory(actor, categoryId);
-        } catch (error) {
+        }
+      } catch (error) {
+        // Dialog was dismissed (same as clicking "No")
+        if (error.message !== 'Dialog was dismissed without pressing a button.') {
+          ui.notifications.error(error.message);
+        }
+      }
+    });
+  });
+
+  // Open note on click
+  container.querySelectorAll('.item-name[data-action="open-note"]').forEach(link => {
+    link.addEventListener('click', async event => {
+      event.preventDefault();
+      event.stopPropagation();
+      const noteId = event.currentTarget.closest('[data-note-key]').dataset.noteKey;
+      const note = actor.items.get(noteId);
+      if (note) {
+        note.sheet.render(true);
+      }
+    });
+  });
+
+  // Edit note action
+  container.querySelectorAll('.item-control[data-action="edit-note"]').forEach(link => {
+    link.addEventListener('click', async event => {
+      event.preventDefault();
+      event.stopPropagation();
+      const noteId = event.currentTarget.dataset.noteKey;
+      const note = actor.items.get(noteId);
+      if (note) {
+        note.sheet.render(true);
+      }
+    });
+  });
+
+  // Delete note action
+  container.querySelectorAll('.item-control[data-action="delete-note"]').forEach(link => {
+    link.addEventListener('click', async event => {
+      event.preventDefault();
+      event.stopPropagation();
+      const noteId = event.currentTarget.dataset.noteKey;
+      const note = actor.items.get(noteId);
+      if (!note) return;
+
+      // Confirm deletion using DialogV2
+      try {
+        const confirm = await foundry.applications.api.DialogV2.confirm({
+          window: {
+            title: game.i18n.localize('dnd5e-sheet-notes.note.delete'),
+            icon: 'fas fa-trash'
+          },
+          position: {
+            width: 400
+          },
+          content: `Are you sure you want to delete the note "${note.name}"?`,
+          yes: {
+            label: 'Yes',
+            icon: 'fas fa-check'
+          },
+          no: {
+            label: 'No',
+            icon: 'fas fa-times'
+          }
+        });
+
+        if (confirm) {
+          await note.delete();
+        }
+      } catch (error) {
+        // Dialog was dismissed (same as clicking "No")
+        if (error.message !== 'Dialog was dismissed without pressing a button.') {
           ui.notifications.error(error.message);
         }
       }
@@ -237,6 +335,40 @@ function addNotesButtons(app, html) {
   const warningsDialog = form.querySelector('dialog.warnings');
   const insertBefore = warningsDialog || null;
 
+  // Add Note button
+  const addNoteBtn = document.createElement('button');
+  addNoteBtn.type = 'button';
+  addNoteBtn.className = 'gold-button create-child dnd5e-sheet-notes add-note';
+  addNoteBtn.innerHTML = '<i class="fas fa-plus"></i>';
+  addNoteBtn.title = 'Add Note';
+  addNoteBtn.addEventListener('click', async event => {
+    event.preventDefault();
+
+    // Create a new Note item
+    try {
+      const noteData = {
+        name: 'New Note',
+        type: 'dnd5e-sheet-notes.note',
+        img: 'icons/svg/book.svg',
+        system: {
+          description: {
+            value: ''
+          },
+          category: ''
+        }
+      };
+
+      const [note] = await app.actor.createEmbeddedDocuments('Item', [noteData]);
+      
+      // Open the new note for editing
+      if (note) {
+        note.sheet.render(true);
+      }
+    } catch (error) {
+      ui.notifications.error(`Failed to create note: ${error.message}`);
+    }
+  });
+
   // Add Category button
   const addCategoryBtn = document.createElement('button');
   addCategoryBtn.type = 'button';
@@ -250,8 +382,10 @@ function addNotesButtons(app, html) {
 
   // Insert before warnings dialog or at the end
   if (insertBefore) {
+    form.insertBefore(addNoteBtn, insertBefore);
     form.insertBefore(addCategoryBtn, insertBefore);
   } else {
+    form.appendChild(addNoteBtn);
     form.appendChild(addCategoryBtn);
   }
 }

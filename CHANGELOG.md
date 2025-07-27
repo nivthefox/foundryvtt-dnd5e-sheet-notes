@@ -23,3 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Categories stored as actor flags
   - Empty categories hidden except in edit mode
   - D&D 5e styled radio buttons for ordering selection
+- Note item management and display
+  - Notes grouped by category in Notes tab
+  - Click note name to view/edit content
+  - Create new notes with Add Note button
+  - Delete notes with confirmation dialog
+  - Notes use book icon by default
+  - Category association via system.category field

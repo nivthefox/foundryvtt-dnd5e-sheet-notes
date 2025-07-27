@@ -84,6 +84,10 @@
 .dnd5e2.sheet:is(.actor) form:is(.tab-notes) .create-child:is(.dnd5e-sheet-notes) {
   display: block;
   
+  &.add-note {
+    right: 56px;
+  }
+  
   &.add-category {
     right: 16px;
   }

@@ -10,6 +10,10 @@ export class NoteModel extends foundry.abstract.DataModel {
           initial: "",
           blank: true
         })
+      }),
+      category: new fields.StringField({
+        initial: "",
+        blank: true
       })
     };
   }

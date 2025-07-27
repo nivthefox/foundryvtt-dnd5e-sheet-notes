@@ -27,6 +27,10 @@ dnd5e-sheet-notes:
       name-too-long: "Category name must be 50 characters or less"
       name-exists: 'A category named "{name}" already exists'
   
+  note:
+    edit: "Edit Note"
+    delete: "Delete Note"
+    
   common:
     save: "Save"
     cancel: "Cancel"

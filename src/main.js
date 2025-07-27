@@ -5,6 +5,7 @@
 
 import { NoteModel } from './models/NoteModel.js';
 import { NoteSheet } from './sheets/NoteSheet.js';
+import { initializeNotesTab } from './sheets/notes-tab.js';
 
 Hooks.once('init', () => {
   console.log('5e Sheet Notes & Trackers | Module initialized');
@@ -19,4 +20,7 @@ Hooks.once('init', () => {
     types: ["dnd5e-sheet-notes.note"],
     makeDefault: true
   });
+  
+  // Initialize the notes tab on character sheets
+  initializeNotesTab();
 });

@@ -13,3 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Simple note-taking interface with title and rich text content
   - Extends D&D 5e ItemSheet5e2 for full system compatibility
   - Hides unnecessary UI elements (chat description, tabs)
+- Notes tab on character sheets
+  - Appears on both PC and NPC character sheets
+  - Uses fa-book-open icon to match Foundry's Journal interface

@@ -17,3 +17,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - JournalEntry compendium pack for character notes storage
 - Basic SCSS stylesheet structure
 - English language file (YAML source)
+- GitHub Actions workflow for automated releases

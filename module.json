@@ -37,19 +37,6 @@
       "path": "dist/lang/en.json"
     }
   ],
-  "packs": [
-    {
-      "name": "notes",
-      "label": "Character Notes",
-      "path": "packs/notes",
-      "type": "JournalEntry",
-      "system": "dnd5e",
-      "ownership": {
-        "PLAYER": "OWNER",
-        "ASSISTANT": "OWNER"
-      }
-    }
-  ],
   "manifest": "https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes/releases/latest/download/module.json",
   "download": "https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes/releases/latest/download/module.zip",
   "url": "https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes",

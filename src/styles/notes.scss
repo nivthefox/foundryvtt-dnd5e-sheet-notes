@@ -3,7 +3,7 @@
  */
 
 /* Note Item Sheet Customizations */
-.dnd5e2.sheet.item.note {
+.dnd5e2.sheet.item.dnd5e-sheet-notes {
   /* Hide the chat description section */
   .card.description[data-target="system.description.chat"] {
     display: none;

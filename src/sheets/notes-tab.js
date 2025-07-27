@@ -45,8 +45,8 @@ function addNotesTab(app, html, _data) {
   notesTab.className = 'item control';
   notesTab.dataset.group = 'primary';
   notesTab.dataset.tab = 'notes';
-  notesTab.dataset.tooltip = 'sheet-notes.tab-label';
-  notesTab.setAttribute('aria-label', game.i18n.localize('sheet-notes.tab-label'));
+  notesTab.dataset.tooltip = 'dnd5e-sheet-notes.tab.label';
+  notesTab.setAttribute('aria-label', game.i18n.localize('dnd5e-sheet-notes.tab.label'));
   notesTab.innerHTML = '<i class="fas fa-book-open"></i>';
   
   // Append to end of tabs

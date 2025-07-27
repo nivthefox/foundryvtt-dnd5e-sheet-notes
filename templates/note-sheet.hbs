@@ -1,0 +1,34 @@
+{{!-- Note Item Sheet --}}
+<form class="{{ cssClass }}" autocomplete="off">
+
+  <header class="sheet-header">
+    <div class="left">
+      <img class="item-image" src="{{ifThen editable img.editable img.value }}" alt="{{ name.value }}"
+           {{#if editable}}data-edit="img"{{/if}}>
+    </div>
+
+    <div class="middle identity-info">
+      {{#if editable}}
+      {{ formInput name.field value=name.editable input=inputs.createTextInput
+                   classes="document-name uninput" }}
+      {{else}}
+      <div class="document-name">{{ name.value }}</div>
+      {{/if}}
+    </div>
+  </header>
+
+  <nav class="sheet-navigation tabs" data-group="primary">
+    {{#each tabs}}
+    <a class="{{ classes }}" data-tab="{{ tab }}">
+      <span>{{ localize label }}</span>
+    </a>
+    {{/each}}
+  </nav>
+
+  <hr class="ampersand">
+
+  <section class="sheet-body">
+    {{> "dnd5e.item-description2" }}
+  </section>
+
+</form>

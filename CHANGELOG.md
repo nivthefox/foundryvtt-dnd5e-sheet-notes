@@ -8,13 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Project foundation with rollup, eslint, and sass configuration
-- Module manifest for FoundryVTT v12+ compatibility
-- D&D 5e system integration (minimum v4.1.2)
-- Basic module initialization hook
-- Initial module structure and build system
-- Keep a Changelog format documentation
-- Basic SCSS stylesheet structure
-- English language file (YAML source)
-- GitHub Actions workflow for automated releases
-- Fix workflow permissions for release updates
+- Initial module foundation for FoundryVTT v12+ and D&D 5e system v4.1.2+
+- Custom Note item type for D&D 5e system
+  - Simple note-taking interface with title and rich text content
+  - Extends D&D 5e ItemSheet5e2 for full system compatibility
+  - Hides unnecessary UI elements (chat description, tabs)

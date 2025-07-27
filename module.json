@@ -42,5 +42,14 @@
   "url": "https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes",
   "bugs": "https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes/issues",
   "readme": "https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes/blob/main/README.md",
-  "license": "LICENSE"
+  "license": "LICENSE",
+  "documentTypes": {
+    "Item": {
+      "note": {
+        "htmlFields": [
+          "description.value"
+        ]
+      }
+    }
+  }
 }

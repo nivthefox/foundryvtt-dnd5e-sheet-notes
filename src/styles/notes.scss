@@ -2,4 +2,20 @@
  * 5e Sheet Notes & Trackers Styles
  */
 
-/* Placeholder for future styling */
+/* Note Item Sheet Customizations */
+.dnd5e2.sheet.item.note {
+  /* Hide the chat description section */
+  .card.description[data-target="system.description.chat"] {
+    display: none;
+  }
+  
+  /* Hide the entire tab navigation bar */
+  nav.tabs {
+    display: none;
+  }
+  
+  /* Also hide the ampersand separator since we don't need it without tabs */
+  hr.ampersand {
+    display: none;
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "id": "dnd5e-sheet-notes",
+  "title": "Sheet Notes DnD5e",
+  "description": "Adds a Notes tab to D&D 5th Edition character sheets with integrated note-taking and tracker functionality",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12"
+  },
+  "authors": [
+    {
+      "name": "nivthefox",
+      "discord": "nivthefox"
+    }
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "4.1.2"
+        }
+      }
+    ]
+  },
+  "esmodules": [
+    "dist/main.js"
+  ],
+  "styles": [
+    "dist/styles/sheet-notes.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "dist/lang/en.json"
+    }
+  ],
+  "manifest": "https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes/releases/latest/download/module.json",
+  "download": "https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes/releases/latest/download/module.zip",
+  "url": "https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes",
+  "bugs": "https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes/issues",
+  "readme": "https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes/blob/main/README.md",
+  "license": "LICENSE"
+}

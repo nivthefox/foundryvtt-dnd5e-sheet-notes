@@ -1,0 +1,38 @@
+{
+  "name": "dnd5e-sheet-notes",
+  "version": "0.1.0",
+  "description": "Character notes and trackers for D&D 5th Edition in Foundry VTT",
+  "type": "module",
+  "keywords": [
+    "foundry-vtt",
+    "foundryvtt",
+    "dnd5e"
+  ],
+  "author": "nivthefox",
+  "license": "MIT",
+  "scripts": {
+    "build": "npm run lint && npm run build:code && npm run build:styles",
+    "build:code": "rollup -c",
+    "build:styles": "sass --no-source-map --style=compressed src/styles/:dist/styles/",
+    "build:packs": "node tools/convert_yaml_to_ldb.mjs",
+    "compose:packs": "node tools/convert_ldb_to_yaml.mjs",
+    "watch": "concurrently \"npm:watch:*\"",
+    "watch:code": "rollup -c -w",
+    "watch:styles": "sass --watch --no-source-map --style=compressed src/styles/:dist/styles/",
+    "lint": "eslint \"src/**/*.js\"",
+    "lint:fix": "eslint \"src/**/*.js\" --fix"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0",
+    "js-yaml": "^4.1.0",
+    "level": "^8.0.1",
+    "rollup": "^4.29.1",
+    "rollup-plugin-copy": "^3.5.0",
+    "sass": "^1.82.0"
+  }
+}

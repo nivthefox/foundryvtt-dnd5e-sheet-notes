@@ -14,3 +14,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Basic module initialization hook
 - Initial module structure and build system
 - Keep a Changelog format documentation
+- JournalEntry compendium pack for character notes storage
+- Basic SCSS stylesheet structure
+- English language file (YAML source)

@@ -62,6 +62,8 @@ async function addNotesContent(app, el) {
   if (!notesContent) {
     const active = app._tabs?.[0]?.active === 'notes';
 
+    await CategoryManager.runMigrations(app.actor);
+
     const templateData = await getNotesTabData(app.actor, active, app._mode);
 
     const notesHtml = await renderTemplate('modules/dnd5e-sheet-notes/templates/notes_tab.hbs', templateData);
@@ -106,16 +108,8 @@ function addNotesTab(el) {
  * @returns {Object} Template data
  */
 async function getNotesTabData(actor, active, mode) {
+  await CategoryManager.ensureDefaultCategory(actor);
   let categories = actor.getFlag('dnd5e-sheet-notes', 'categories') || [];
-
-  if (!categories.find(c => c.name === 'Notes')) {
-    categories = [{
-      key: 'default-notes',
-      name: 'Notes',
-      ordering: 0,
-      collapsed: false
-    }, ...categories];
-  }
 
   categories.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -125,7 +119,7 @@ async function getNotesTabData(actor, active, mode) {
     const categoryNotes = allNotes.filter(note => {
       const noteCategory = note.system.category;
       if (!noteCategory || noteCategory === '') {
-        return category.key === 'default-notes' || category.name === 'Notes';
+        return category.name === 'Notes';
       }
       return noteCategory === category.key;
     });
@@ -139,7 +133,7 @@ async function getNotesTabData(actor, active, mode) {
 
     return {
       ...category,
-      isDefault: category.name === 'Notes' || category.key === 'default-notes',
+      isDefault: category.name === 'Notes',
       notes,
       noteCount: notes.length,
       active: active || false,
@@ -448,12 +442,16 @@ async function handleNoteDrop(app, event) {
 
   if (item.parent?.id !== app.actor.id) return;
 
+  await CategoryManager.ensureDefaultCategory(app.actor);
+
   const dropTarget = event.target.closest('.items-section');
   if (!dropTarget) return;
 
   const targetCategoryId = dropTarget.dataset.categoryId;
 
-  const targetCategory = targetCategoryId === 'default-notes' ? '' : targetCategoryId;
+  const categories = app.actor.getFlag('dnd5e-sheet-notes', 'categories') || [];
+  const targetCategoryObj = categories.find(c => c.key === targetCategoryId);
+  const targetCategory = (targetCategoryObj && targetCategoryObj.name === 'Notes') ? '' : targetCategoryId;
   const currentCategory = item.system.category || '';
 
   if (currentCategory === targetCategory) return;

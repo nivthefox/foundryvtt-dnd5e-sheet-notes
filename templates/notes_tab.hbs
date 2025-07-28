@@ -5,6 +5,7 @@
       <div class="items-header header">
         <i class="fas fa-chevron-down"></i>
         <h3 class="item-name">{{this.name}}</h3>
+        <div class="spacer"></div>
         {{#if this.collapsed}}
           {{#if this.noteCount}}
           <span class="hidden-notes-count">{{#if (eq this.noteCount 1)}}{{ localize "dnd5e-sheet-notes.category.collapsed.singular" count=this.noteCount }}{{else}}{{ localize "dnd5e-sheet-notes.category.collapsed.plural" count=this.noteCount }}{{/if}}</span>
@@ -12,11 +13,11 @@
         {{/if}}
         <div class="item-header item-controls">
           {{#if @root.editable}}
-            {{#unless this.isDefault}}
             <a class="item-control item-action" data-action="edit-category" data-category-id="{{this.key}}" 
                title="{{ localize "dnd5e-sheet-notes.category.edit" }}" aria-label="{{ localize "dnd5e-sheet-notes.category.edit" }}">
               <i class="fas fa-edit"></i>
             </a>
+            {{#unless this.isDefault}}
             <a class="item-control item-action" data-action="delete-category" data-category-id="{{this.key}}" 
                title="{{ localize "dnd5e-sheet-notes.category.delete" }}" aria-label="{{ localize "dnd5e-sheet-notes.category.delete" }}">
               <i class="fas fa-trash"></i>

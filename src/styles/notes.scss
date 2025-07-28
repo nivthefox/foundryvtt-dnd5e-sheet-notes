@@ -104,14 +104,21 @@
         flex: 0 0 auto;
       }
       
+      .spacer {
+        flex: 1 1 auto;
+      }
+      
       .hidden-notes-count {
         flex: 0 0 auto;
-        margin-left: auto;
         margin-right: 0.5rem;
       }
       
       .item-controls {
         flex: 0 0 auto;
+        display: flex;
+        gap: 0.25rem;
+        min-width: 4rem;
+        justify-content: flex-start;
       }
     }
     

@@ -194,26 +194,6 @@ export class CategoryManager {
     if (!actor) throw new Error('Actor must be provided');
     if (!categoryKey) throw new Error('Category key must be provided');
 
-    if (categoryKey === 'default-notes') {
-      let categories = actor.getFlag(MODULE_ID, this.FLAG_KEY) || [];
-
-      let defaultCategory = categories.find(c => c.key === 'default-notes');
-      if (!defaultCategory) {
-        defaultCategory = {
-          key: 'default-notes',
-          name: 'Notes',
-          ordering: 0,
-          collapsed: true
-        };
-        categories.unshift(defaultCategory);
-      } else {
-        defaultCategory.collapsed = !defaultCategory.collapsed;
-      }
-
-      await actor.setFlag(MODULE_ID, this.FLAG_KEY, categories);
-      return;
-    }
-
     const categories = actor.getFlag(MODULE_ID, this.FLAG_KEY) || [];
     const categoryIndex = categories.findIndex(c => c.key === categoryKey);
 
@@ -224,5 +204,106 @@ export class CategoryManager {
     categories[categoryIndex].collapsed = !categories[categoryIndex].collapsed;
 
     await actor.setFlag(MODULE_ID, this.FLAG_KEY, categories);
+  }
+
+  /**
+   * Ensure the default "Notes" category exists, creating it if needed
+   * @param {Actor} actor - The actor to ensure has a default category
+   * @returns {Promise<Category|null>} - The default category or null if not needed
+   */
+  static async ensureDefaultCategory(actor) {
+    if (!actor) throw new Error('Actor must be provided');
+
+    const categories = actor.getFlag(MODULE_ID, this.FLAG_KEY) || [];
+    let defaultCategory = categories.find(c => c.name === 'Notes');
+
+    if (!defaultCategory) {
+      const uncategorizedNotes = actor.items.filter(item =>
+        item.type === 'dnd5e-sheet-notes.note'
+        && (!item.system.category || item.system.category === '')
+      );
+
+      if (uncategorizedNotes.length > 0) {
+        defaultCategory = {
+          key: foundry.utils.randomID(),
+          name: 'Notes',
+          ordering: 0,
+          collapsed: false
+        };
+        categories.unshift(defaultCategory);
+        await actor.setFlag(MODULE_ID, this.FLAG_KEY, categories);
+      }
+    }
+
+    return defaultCategory || null;
+  }
+
+  /**
+   * Current migration version
+   */
+  static MIGRATION_VERSION = 1;
+
+  /**
+   * Run any needed migrations for the actor's notes data
+   * @param {Actor} actor - The actor to migrate
+   * @returns {Promise<void>}
+   */
+  static async runMigrations(actor) {
+    if (!actor) throw new Error('Actor must be provided');
+
+    const currentVersion = actor.getFlag(MODULE_ID, 'version');
+
+    if (currentVersion !== undefined && currentVersion >= this.MIGRATION_VERSION) {
+      return;
+    }
+
+    const hasAnyNotes = actor.items.some(item => item.type === 'dnd5e-sheet-notes.note');
+    const hasCategories = (actor.getFlag(MODULE_ID, this.FLAG_KEY) || []).length > 0;
+
+    if (currentVersion === undefined && !hasAnyNotes && !hasCategories) {
+      await actor.setFlag(MODULE_ID, 'version', this.MIGRATION_VERSION);
+      return;
+    }
+
+    const startVersion = currentVersion || 0;
+    if (startVersion < 1) {
+      await this._migrateToV1(actor);
+    }
+
+    await actor.setFlag(MODULE_ID, 'version', this.MIGRATION_VERSION);
+  }
+
+  /**
+   * Migration to version 1: Move uncategorized notes to default category
+   * @param {Actor} actor - The actor to migrate
+   * @returns {Promise<void>}
+   * @private
+   */
+  static async _migrateToV1(actor) {
+    const categories = actor.getFlag(MODULE_ID, this.FLAG_KEY) || [];
+    const hasDefaultCategory = categories.some(c => c.name === 'Notes');
+
+    if (!hasDefaultCategory) {
+      const uncategorizedNotes = actor.items.filter(item =>
+        item.type === 'dnd5e-sheet-notes.note'
+        && (!item.system.category || item.system.category === '')
+      );
+
+      if (uncategorizedNotes.length > 0) {
+        const defaultCategory = {
+          key: foundry.utils.randomID(),
+          name: 'Notes',
+          ordering: 0,
+          collapsed: false
+        };
+
+        categories.unshift(defaultCategory);
+        await actor.setFlag(MODULE_ID, this.FLAG_KEY, categories);
+
+        for (const note of uncategorizedNotes) {
+          await note.update({ 'system.category': defaultCategory.key });
+        }
+      }
+    }
   }
 }

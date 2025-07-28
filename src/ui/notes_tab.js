@@ -288,7 +288,7 @@ function activateNotesListeners(actor, app, container) {
       try {
         const confirm = await foundry.applications.api.DialogV2.confirm({
           window: {
-            title: game.i18n.localize('dnd5e-sheet-notes.note.delete'),
+            title: game.i18n.localize('dnd5e-sheet-notes.actions.delete'),
             icon: 'fas fa-trash'
           },
           position: {
@@ -356,7 +356,7 @@ function addNotesButtons(app, html) {
       const noteData = {
         name: 'New Note',
         type: 'dnd5e-sheet-notes.note',
-        img: 'icons/svg/book.svg',
+        img: 'modules/dnd5e-sheet-notes/public/note.svg',
         system: {
           description: {
             value: ''

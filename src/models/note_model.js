@@ -17,4 +17,15 @@ export class NoteModel extends foundry.abstract.DataModel {
       })
     };
   }
+
+  /**
+   * Configure the Note item type settings
+   */
+  static setup() {
+    // Set the default icon for Note items in creation dialogs
+    if (!CONFIG.DND5E.defaultArtwork.Item) {
+      CONFIG.DND5E.defaultArtwork.Item = {};
+    }
+    CONFIG.DND5E.defaultArtwork.Item["dnd5e-sheet-notes.note"] = "modules/dnd5e-sheet-notes/public/note.svg";
+  }
 }

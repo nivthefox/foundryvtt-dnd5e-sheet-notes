@@ -36,3 +36,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - View, Edit, Duplicate, and Delete actions
   - Matches D&D 5e styling and behavior
   - Click outside to close menu
+
+### Fixed
+- Item type integration with D&D 5e system
+  - Note items now display proper localized label in creation dialog
+  - Custom colorable icon matches D&D 5e system styling
+  - Default artwork properly configured for creation dialog

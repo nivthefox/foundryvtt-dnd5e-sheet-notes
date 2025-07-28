@@ -15,6 +15,9 @@ Hooks.once('init', () => {
     'dnd5e-sheet-notes.note': NoteModel
   });
 
+  // Configure the Note model
+  NoteModel.setup();
+
   // Register the Note sheet
   DocumentSheetConfig.registerSheet(Item, 'dnd5e-sheet-notes', NoteSheet, {
     types: ['dnd5e-sheet-notes.note'],

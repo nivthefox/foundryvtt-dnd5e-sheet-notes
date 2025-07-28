@@ -10,11 +10,11 @@
     <div class="item-detail item-controls">
       {{#if @root.editable}}
       <a class="item-control" data-action="edit-note" data-note-key="{{this.id}}" 
-         title="{{ localize "dnd5e-sheet-notes.note.edit" }}" aria-label="{{ localize "dnd5e-sheet-notes.note.edit" }}">
+         title="{{ localize "dnd5e-sheet-notes.actions.edit" }}" aria-label="{{ localize "dnd5e-sheet-notes.actions.edit" }}">
         <i class="fas fa-edit"></i>
       </a>
       <a class="item-control" data-action="delete-note" data-note-key="{{this.id}}" 
-         title="{{ localize "dnd5e-sheet-notes.note.delete" }}" aria-label="{{ localize "dnd5e-sheet-notes.note.delete" }}">
+         title="{{ localize "dnd5e-sheet-notes.actions.delete" }}" aria-label="{{ localize "dnd5e-sheet-notes.actions.delete" }}">
         <i class="fas fa-trash"></i>
       </a>
       {{/if}}

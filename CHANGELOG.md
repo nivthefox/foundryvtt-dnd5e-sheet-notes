@@ -30,3 +30,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Delete notes with confirmation dialog
   - Notes use book icon by default
   - Category association via system.category field
+  - Drag and drop notes between categories using Foundry's native system

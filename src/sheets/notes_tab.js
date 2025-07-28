@@ -312,6 +312,9 @@ function activateNotesListeners(actor, app, container) {
       }
     });
   });
+
+  // Setup drag and drop using Foundry's system
+  setupNoteDragDrop(app, container);
 }
 
 /**
@@ -388,4 +391,108 @@ function addNotesButtons(app, html) {
     form.appendChild(addNoteBtn);
     form.appendChild(addCategoryBtn);
   }
+}
+
+
+/**
+ * Setup drag and drop for note items using Foundry's system
+ * @param {ActorSheet5e} app - The sheet application
+ * @param {HTMLElement} container - The notes tab container
+ */
+function setupNoteDragDrop(app, container) {
+  // Create a new DragDrop handler for the notes tab
+  const dragDrop = new DragDrop({
+    dragSelector: '.item[data-item-id]',
+    dropSelector: '.items-section',
+    permissions: {
+      dragstart: app._canDragStart.bind(app),
+      drop: app._canDragDrop.bind(app)
+    },
+    callbacks: {
+      dragstart: handleNoteDragStart.bind(null, app),
+      drop: handleNoteDrop.bind(null, app)
+    }
+  });
+
+  // Bind the drag drop handler to the container
+  dragDrop.bind(container);
+}
+
+/**
+ * Handle drag start for note items
+ * @param {ActorSheet5e} app - The sheet application
+ * @param {DragEvent} event - The drag start event
+ */
+function handleNoteDragStart(app, event) {
+  const li = event.currentTarget;
+  const itemId = li.dataset.itemId;
+  
+  if (!itemId) return;
+  
+  const item = app.actor.items.get(itemId);
+  if (!item || item.type !== 'dnd5e-sheet-notes.note') return;
+  
+  // Get drag data from the item
+  const dragData = item.toDragData();
+  
+  // Set the drag data
+  event.dataTransfer.setData('text/plain', JSON.stringify(dragData));
+  
+  // Add visual feedback
+  setTimeout(() => {
+    const notesTab = li.closest('.tab.notes');
+    if (notesTab) {
+      notesTab.classList.add('dragging-active');
+    }
+  }, 0);
+  
+  // Store cleanup function for dragend
+  const cleanup = () => {
+    const notesTab = li.closest('.tab.notes');
+    if (notesTab) {
+      notesTab.classList.remove('dragging-active');
+    }
+    li.removeEventListener('dragend', cleanup);
+  };
+  
+  li.addEventListener('dragend', cleanup);
+}
+
+/**
+ * Handle drop on category sections
+ * @param {ActorSheet5e} app - The sheet application
+ * @param {DragEvent} event - The drop event
+ */
+async function handleNoteDrop(app, event) {
+  event.preventDefault();
+  
+  // Get the drag data
+  const data = TextEditor.getDragEventData(event);
+  
+  if (!data || data.type !== 'Item') return;
+  
+  // Get the item from the drag data
+  const item = await fromUuid(data.uuid);
+  if (!item || item.type !== 'dnd5e-sheet-notes.note') return;
+  
+  // Make sure this item belongs to the current actor
+  if (item.parent?.id !== app.actor.id) return;
+  
+  // Get target category ID from the drop target
+  const dropTarget = event.target.closest('.items-section');
+  if (!dropTarget) return;
+  
+  const targetCategoryId = dropTarget.dataset.categoryId;
+  
+  // Convert category ID (default-notes should be empty string)
+  const targetCategory = targetCategoryId === 'default-notes' ? '' : targetCategoryId;
+  const currentCategory = item.system.category || '';
+  
+  // Don't update if already in this category
+  if (currentCategory === targetCategory) return;
+  
+  // Update the item's category
+  await item.update({
+    'system.category': targetCategory
+  });
 }

@@ -2,6 +2,7 @@ import { NoteModel } from './models/note_model';
 import { NoteSheet } from './ui/note_sheet';
 import { initializeNotesTab } from './ui/notes_tab';
 import { registerSearchEnhancement } from './ui/search_enhancement';
+import { registerFavoriteEnhancement } from './ui/favorite_enhancement';
 
 Hooks.once('init', () => {
   console.log('5e Sheet Notes & Trackers | Module initialized');
@@ -22,4 +23,5 @@ Hooks.once('init', () => {
 
 Hooks.once('setup', () => {
   registerSearchEnhancement();
+  registerFavoriteEnhancement();
 });

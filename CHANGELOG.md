@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Collapsible categories - click on category headers to expand/collapse their contents
 - Hidden notes count displayed when categories are collapsed
 - Search functionality for notes that searches both note names and content
+- Favorites support - notes can now be dragged to the favorites bar and clicked to open
 
 ### Changed
 - Removed minimum height from category sections for more compact layout

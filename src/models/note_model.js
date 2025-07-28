@@ -1,3 +1,5 @@
+import { Category } from '../entities/category.js';
+
 /**
  * Data model for Note items extending Foundry's DataModel
  */
@@ -19,6 +21,27 @@ export class NoteModel extends foundry.abstract.DataModel {
         initial: '',
         blank: true
       })
+    };
+  }
+
+  /**
+   * Get favorite data for this note
+   * @returns {Object} FavoriteData5e object for favorites system
+   */
+  getFavoriteData() {
+    let subtitle = game.i18n.localize('dnd5e-sheet-notes.type.note');
+    
+    if (this.category) {
+      const category = Category.fromActor(this.parent.parent, this.category);
+      if (category) {
+        subtitle = category.name;
+      }
+    }
+    
+    return {
+      img: this.parent.img,
+      title: this.parent.name,
+      subtitle: subtitle
     };
   }
 

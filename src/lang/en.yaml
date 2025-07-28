@@ -40,6 +40,9 @@ dnd5e-sheet-notes:
     placeholder: Search notes
     clear: Clear Search
     
+  type:
+    note: Note
+    
   common:
     save: Save
     cancel: Cancel

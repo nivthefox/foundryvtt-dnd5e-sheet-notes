@@ -14,7 +14,7 @@ export class CategoryManager {
    * @param {Object} categoryData - Category data
    * @returns {Promise<Category>} - The created category
    */
-  static async createCategory(actor, categoryData = {}) {
+  static async create(actor, categoryData = {}) {
     if (!actor) throw new Error('Actor must be provided');
 
     const category = new Category(categoryData);
@@ -99,7 +99,7 @@ export class CategoryManager {
    * @param {Object} updates - Updates to apply
    * @returns {Promise<Category>} - The updated category
    */
-  static async updateCategory(actor, categoryKey, updates) {
+  static async update(actor, categoryKey, updates) {
     if (!actor) throw new Error('Actor must be provided');
     if (!categoryKey) throw new Error('Category key must be provided');
 
@@ -133,7 +133,7 @@ export class CategoryManager {
    * @param {string} categoryKey - The category key to delete
    * @returns {Promise<void>}
    */
-  static async deleteCategory(actor, categoryKey) {
+  static async delete(actor, categoryKey) {
     if (!actor) throw new Error('Actor must be provided');
     if (!categoryKey) throw new Error('Category key must be provided');
 
@@ -144,6 +144,18 @@ export class CategoryManager {
       throw new Error(`Category with key ${categoryKey} not found`);
     }
 
+    const notesInCategory = actor.items.filter(item =>
+      item.type === 'dnd5e-sheet-notes.note' && item.system.category === categoryKey
+    );
+
+    const updates = notesInCategory.map(note => ({
+      _id: note.id,
+      'system.category': ''
+    }));
+
+    if (updates.length > 0) {
+      await actor.updateEmbeddedDocuments('Item', updates);
+    }
 
     await actor.setFlag(MODULE_ID, this.FLAG_KEY, filteredCategories);
   }

@@ -208,7 +208,7 @@ function activateNotesListeners(actor, app, container) {
         });
 
         if (confirm) {
-          await CategoryManager.deleteCategory(actor, categoryId);
+          await CategoryManager.delete(actor, categoryId);
         }
       } catch (error) {
         if (error.message !== 'Dialog was dismissed without pressing a button.') {

@@ -93,7 +93,7 @@ export class CategoryEditor extends foundry.applications.api
 
     try {
       if (!editor.isEditMode) {
-        await CategoryManager.createCategory(editor.actor, {
+        await CategoryManager.create(editor.actor, {
           name: data.name.trim(),
           ordering: data.ordering
         });
@@ -106,7 +106,7 @@ export class CategoryEditor extends foundry.applications.api
           updates.name = data.name.trim();
         }
 
-        await CategoryManager.updateCategory(editor.actor, editor.category.key, updates);
+        await CategoryManager.update(editor.actor, editor.category.key, updates);
       }
 
       editor.close();

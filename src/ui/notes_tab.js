@@ -112,7 +112,8 @@ async function getNotesTabData(actor, active, mode) {
     categories = [{
       key: 'default-notes',
       name: 'Notes',
-      ordering: 0
+      ordering: 0,
+      collapsed: false
     }, ...categories];
   }
 
@@ -140,6 +141,7 @@ async function getNotesTabData(actor, active, mode) {
       ...category,
       isDefault: category.name === 'Notes' || category.key === 'default-notes',
       notes,
+      noteCount: notes.length,
       active: active || false,
     };
   });
@@ -163,6 +165,23 @@ function activateNotesListeners(actor, app, container) {
   container.querySelector('.add-category')?.addEventListener('click', async event => {
     event.preventDefault();
     CategoryEditor.show(actor);
+  });
+
+  container.querySelectorAll('.items-section.collapsible .items-header').forEach(header => {
+    header.addEventListener('click', async event => {
+      if (event.target.closest('.item-controls')) return;
+
+      event.preventDefault();
+      const categoryElement = event.currentTarget.closest('.items-section');
+      const categoryId = categoryElement.dataset.categoryId;
+
+      try {
+        await CategoryManager.toggleCollapsed(actor, categoryId);
+        app.render();
+      } catch (error) {
+        ui.notifications.error(error.message);
+      }
+    });
   });
 
   container.querySelectorAll('.item-control[data-action="edit-category"]').forEach(link => {

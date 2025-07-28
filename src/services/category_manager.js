@@ -183,4 +183,46 @@ export class CategoryManager {
 
     await actor.setFlag(MODULE_ID, this.FLAG_KEY, categories);
   }
+
+  /**
+   * Toggle the collapsed state of a category
+   * @param {Actor} actor - The actor containing the category
+   * @param {string} categoryKey - The category key to toggle
+   * @returns {Promise<void>}
+   */
+  static async toggleCollapsed(actor, categoryKey) {
+    if (!actor) throw new Error('Actor must be provided');
+    if (!categoryKey) throw new Error('Category key must be provided');
+
+    if (categoryKey === 'default-notes') {
+      let categories = actor.getFlag(MODULE_ID, this.FLAG_KEY) || [];
+
+      let defaultCategory = categories.find(c => c.key === 'default-notes');
+      if (!defaultCategory) {
+        defaultCategory = {
+          key: 'default-notes',
+          name: 'Notes',
+          ordering: 0,
+          collapsed: true
+        };
+        categories.unshift(defaultCategory);
+      } else {
+        defaultCategory.collapsed = !defaultCategory.collapsed;
+      }
+
+      await actor.setFlag(MODULE_ID, this.FLAG_KEY, categories);
+      return;
+    }
+
+    const categories = actor.getFlag(MODULE_ID, this.FLAG_KEY) || [];
+    const categoryIndex = categories.findIndex(c => c.key === categoryKey);
+
+    if (categoryIndex === -1) {
+      throw new Error(`Category with key "${categoryKey}" not found`);
+    }
+
+    categories[categoryIndex].collapsed = !categories[categoryIndex].collapsed;
+
+    await actor.setFlag(MODULE_ID, this.FLAG_KEY, categories);
+  }
 }

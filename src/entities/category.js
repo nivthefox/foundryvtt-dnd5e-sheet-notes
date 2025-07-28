@@ -19,7 +19,8 @@ export class Category {
     const defaults = {
       key: foundry.utils.randomID(),
       name: 'New Category',
-      ordering: CATEGORY_ORDERING.ALPHABETICAL // How notes within this category are sorted
+      ordering: CATEGORY_ORDERING.ALPHABETICAL,
+      collapsed: false
     };
 
     const categoryData = foundry.utils.mergeObject(defaults, data);
@@ -27,6 +28,7 @@ export class Category {
     this.key = categoryData.key;
     this.name = categoryData.name;
     this.ordering = categoryData.ordering;
+    this.collapsed = categoryData.collapsed;
 
     this.validate();
   }
@@ -42,6 +44,7 @@ export class Category {
 
     this.name = mergedData.name;
     this.ordering = mergedData.ordering;
+    this.collapsed = mergedData.collapsed;
 
     this.validate();
     return this;
@@ -55,7 +58,8 @@ export class Category {
     return {
       key: this.key,
       name: this.name,
-      ordering: this.ordering
+      ordering: this.ordering,
+      collapsed: this.collapsed
     };
   }
 

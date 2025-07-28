@@ -87,6 +87,58 @@
   }
 }
 
+/* Collapsible categories */
+.tab.dnd5e-sheet-notes {
+  .items-section.collapsible {
+    .items-header {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding-left: 0.5rem;
+      
+      .fa-chevron-down {
+        margin-right: 0.5rem;
+        transition: transform 0.2s ease-in-out;
+      }
+      
+      .item-name {
+        flex: 0 0 auto;
+      }
+      
+      .hidden-notes-count {
+        flex: 0 0 auto;
+        margin-left: auto;
+        margin-right: 0.5rem;
+      }
+      
+      .item-controls {
+        flex: 0 0 auto;
+      }
+    }
+    
+    &.collapsed {
+      .items-header .fa-chevron-down {
+        transform: rotate(-90deg);
+      }
+      
+      .collapsible-content {
+        display: none;
+      }
+      
+      .hidden-notes-count {
+        display: inline;
+      }
+    }
+    
+    .hidden-notes-count {
+      display: none;
+      color: var(--color-text-light-5);
+      font-size: 0.875rem;
+      font-style: italic;
+    }
+  }
+}
+
 /* Category Editor styles */
 .category-editor {
   .form-group {

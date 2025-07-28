@@ -26,6 +26,10 @@ dnd5e-sheet-notes:
       name-required: Category name is required
       name-too-long: Category name must be 50 characters or less
       name-exists: "A category named \"{name}\" already exists"
+      
+    collapsed:
+      singular: "{count} hidden note"
+      plural: "{count} hidden notes"
   
   actions:
     edit: Edit Note

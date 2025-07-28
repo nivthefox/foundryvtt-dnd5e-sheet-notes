@@ -22,6 +22,15 @@
           "minimum": "4.1.2"
         }
       }
+    ],
+    "requires": [
+      {
+        "id": "lib-wrapper",
+        "type": "module",
+        "compatibility": {
+          "minimum": "1.12.0"
+        }
+      }
     ]
   },
   "esmodules": [

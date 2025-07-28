@@ -20,6 +20,13 @@
 
 /* Notes tab styles */
 .tab.dnd5e-sheet-notes {
+  .notes-element {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+
   .top {
     .actions {
       display: grid;

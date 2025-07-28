@@ -1,40 +1,45 @@
 <div class="tab dnd5e-sheet-notes {{#if active}}active{{/if}}" data-group="primary" data-tab="notes">
-  <section class="items-list notes-list">
-    {{#each categories}}
-    <div class="items-section card collapsible {{#if this.collapsed}}collapsed{{/if}}" data-category-id="{{this.key}}">
-      <div class="items-header header">
-        <i class="fas fa-chevron-down"></i>
-        <h3 class="item-name">{{this.name}}</h3>
-        <div class="spacer"></div>
-        {{#if this.collapsed}}
-          {{#if this.noteCount}}
-          <span class="hidden-notes-count">{{#if (eq this.noteCount 1)}}{{ localize "dnd5e-sheet-notes.category.collapsed.singular" count=this.noteCount }}{{else}}{{ localize "dnd5e-sheet-notes.category.collapsed.plural" count=this.noteCount }}{{/if}}</span>
+  <div class="notes-element">
+    {{!-- Search Controls using real item-list-controls --}}
+    <item-list-controls for="notes" collection="notes" label="{{ localize "dnd5e-sheet-notes.search.placeholder" }}"></item-list-controls>
+    
+    <section class="items-list notes-list" data-item-list="notes">
+      {{#each categories}}
+      <div class="items-section card collapsible {{#if this.collapsed}}collapsed{{/if}}" data-category-id="{{this.key}}">
+        <div class="items-header header">
+          <i class="fas fa-chevron-down"></i>
+          <h3 class="item-name">{{this.name}}</h3>
+          <div class="spacer"></div>
+          {{#if this.collapsed}}
+            {{#if this.noteCount}}
+            <span class="hidden-notes-count">{{#if (eq this.noteCount 1)}}{{ localize "dnd5e-sheet-notes.category.collapsed.singular" count=this.noteCount }}{{else}}{{ localize "dnd5e-sheet-notes.category.collapsed.plural" count=this.noteCount }}{{/if}}</span>
+            {{/if}}
           {{/if}}
-        {{/if}}
-        <div class="item-header item-controls">
-          {{#if @root.editable}}
-            <a class="item-control item-action" data-action="edit-category" data-category-id="{{this.key}}" 
-               title="{{ localize "dnd5e-sheet-notes.category.edit" }}" aria-label="{{ localize "dnd5e-sheet-notes.category.edit" }}">
-              <i class="fas fa-edit"></i>
-            </a>
-            {{#unless this.isDefault}}
-            <a class="item-control item-action" data-action="delete-category" data-category-id="{{this.key}}" 
-               title="{{ localize "dnd5e-sheet-notes.category.delete" }}" aria-label="{{ localize "dnd5e-sheet-notes.category.delete" }}">
-              <i class="fas fa-trash"></i>
-            </a>
-            {{/unless}}
-          {{/if}}
+          <div class="item-header item-controls">
+            {{#if @root.editable}}
+              <a class="item-control item-action" data-action="edit-category" data-category-id="{{this.key}}" 
+                title="{{ localize "dnd5e-sheet-notes.category.edit" }}" aria-label="{{ localize "dnd5e-sheet-notes.category.edit" }}">
+                <i class="fas fa-edit"></i>
+              </a>
+              {{#unless this.isDefault}}
+              <a class="item-control item-action" data-action="delete-category" data-category-id="{{this.key}}" 
+                title="{{ localize "dnd5e-sheet-notes.category.delete" }}" aria-label="{{ localize "dnd5e-sheet-notes.category.delete" }}">
+                <i class="fas fa-trash"></i>
+              </a>
+              {{/unless}}
+            {{/if}}
+          </div>
+        </div>
+        
+        <div class="collapsible-content">
+          <ol class="item-list unlist">
+            {{#each notes}}
+              {{> "modules/dnd5e-sheet-notes/templates/partials/note_item.hbs"}}
+            {{/each}}
+          </ol>
         </div>
       </div>
-      
-      <div class="collapsible-content">
-        <ol class="item-list unlist">
-          {{#each notes}}
-            {{> "modules/dnd5e-sheet-notes/templates/partials/note_item.hbs"}}
-          {{/each}}
-        </ol>
-      </div>
-    </div>
-    {{/each}}
-  </section>
+      {{/each}}
+    </section>
+  </div>
 </div>

@@ -35,6 +35,11 @@ dnd5e-sheet-notes:
     edit: Edit Note
     delete: Delete Note
     
+  search:
+    label: Search notes
+    placeholder: Search notes
+    clear: Clear Search
+    
   common:
     save: Save
     cancel: Cancel

@@ -40,6 +40,45 @@ async function addNotes(app, html, _data) {
     return;
   }
 
+
+  // Initialize filter state for notes
+  if (!app._filters) {
+    app._filters = {};
+  }
+  if (!app._filters.notes) {
+    app._filters.notes = { name: "", properties: new Set() };
+  }
+
+  // Store content search results for the component to use
+  app._notesContentMatches = new Set();
+
+  // Add custom filtering method that includes content search
+  app._filterChildren = function(collection, properties) {
+    if (collection !== 'notes') return null;
+    
+    const allNotes = this.actor.items.filter(item => item.type === 'dnd5e-sheet-notes.note');
+    const searchTerm = this._filters.notes.name.toLowerCase();
+    
+    // Clear previous content matches
+    this._notesContentMatches.clear();
+    
+    if (searchTerm) {
+      // Find notes that match content and store their IDs
+      allNotes.forEach(note => {
+        if (note.system.description?.value) {
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = note.system.description.value;
+          const contentText = (tempDiv.textContent || tempDiv.innerText || '').toLowerCase();
+          if (contentText.includes(searchTerm)) {
+            this._notesContentMatches.add(note.id);
+          }
+        }
+      });
+    }
+    
+    return allNotes;
+  };
+
   await addNotesContent(app, root);
 
   addNotesTab(root);
@@ -462,3 +501,4 @@ async function handleNoteDrop(app, event) {
     'system.category': targetCategory
   });
 }
+

@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Collapsible categories - click on category headers to expand/collapse their contents
 - Hidden notes count displayed when categories are collapsed
 
+### Changed
+- Removed minimum height from category sections for more compact layout
+
 ## [1.0.0](https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes/releases/tag/1.0.0) - 2025-07-27
 
 ### Added

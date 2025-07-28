@@ -45,7 +45,7 @@
   "license": "LICENSE",
   "documentTypes": {
     "Item": {
-      "dnd5e-sheet-notes.note": {
+      "note": {
         "htmlFields": [
           "description.value"
         ]

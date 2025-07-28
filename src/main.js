@@ -4,23 +4,23 @@
  */
 
 import { NoteModel } from './models/note_model';
-import { NoteSheet } from './sheets/note_sheet';
-import { initializeNotesTab } from './sheets/notes_tab';
+import { NoteSheet } from './ui/note_sheet';
+import { initializeNotesTab } from './ui/notes_tab';
 
 Hooks.once('init', () => {
   console.log('5e Sheet Notes & Trackers | Module initialized');
-  
+
   // Register the Note data model
   Object.assign(CONFIG.Item.dataModels, {
-    "dnd5e-sheet-notes.note": NoteModel
+    'dnd5e-sheet-notes.note': NoteModel
   });
-  
+
   // Register the Note sheet
-  Items.registerSheet("dnd5e-sheet-notes", NoteSheet, {
-    types: ["dnd5e-sheet-notes.note"],
+  DocumentSheetConfig.registerSheet(Item, 'dnd5e-sheet-notes', NoteSheet, {
+    types: ['dnd5e-sheet-notes.note'],
     makeDefault: true
   });
-  
+
   // Initialize the notes tab on character sheets
   initializeNotesTab();
 });

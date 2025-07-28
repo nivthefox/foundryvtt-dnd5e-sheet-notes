@@ -5,6 +5,7 @@
 
 import { CategoryEditor } from './category_editor';
 import { CategoryManager } from '../services/category_manager';
+import { NoteContextMenu } from './note_context_menu';
 
 // Sheet mode constants
 const SHEET_MODES = {
@@ -145,7 +146,7 @@ async function getNotesTabData(actor, active, mode) {
     const categoryNotes = allNotes.filter(note => {
       const noteCategory = note.system.category;
       // Uncategorized notes (empty string, null, or undefined) go to default "Notes" category
-      if (!noteCategory || noteCategory === "") {
+      if (!noteCategory || noteCategory === '') {
         return category.key === 'default-notes' || category.name === 'Notes';
       }
       return noteCategory === category.key;
@@ -182,6 +183,9 @@ async function getNotesTabData(actor, active, mode) {
  * @param {HTMLElement} container - The container element
  */
 function activateNotesListeners(actor, app, container) {
+  // Initialize context menu system
+  NoteContextMenu.initialize(container, app);
+
   // Add Category button
   container.querySelector('.add-category')?.addEventListener('click', async event => {
     event.preventDefault();
@@ -362,7 +366,7 @@ function addNotesButtons(app, html) {
       };
 
       const [note] = await app.actor.createEmbeddedDocuments('Item', [noteData]);
-      
+
       // Open the new note for editing
       if (note) {
         note.sheet.render(true);
@@ -426,18 +430,18 @@ function setupNoteDragDrop(app, container) {
 function handleNoteDragStart(app, event) {
   const li = event.currentTarget;
   const itemId = li.dataset.itemId;
-  
+
   if (!itemId) return;
-  
+
   const item = app.actor.items.get(itemId);
   if (!item || item.type !== 'dnd5e-sheet-notes.note') return;
-  
+
   // Get drag data from the item
   const dragData = item.toDragData();
-  
+
   // Set the drag data
   event.dataTransfer.setData('text/plain', JSON.stringify(dragData));
-  
+
   // Add visual feedback
   setTimeout(() => {
     const notesTab = li.closest('.tab.notes');
@@ -445,7 +449,7 @@ function handleNoteDragStart(app, event) {
       notesTab.classList.add('dragging-active');
     }
   }, 0);
-  
+
   // Store cleanup function for dragend
   const cleanup = () => {
     const notesTab = li.closest('.tab.notes');
@@ -454,7 +458,7 @@ function handleNoteDragStart(app, event) {
     }
     li.removeEventListener('dragend', cleanup);
   };
-  
+
   li.addEventListener('dragend', cleanup);
 }
 
@@ -465,32 +469,32 @@ function handleNoteDragStart(app, event) {
  */
 async function handleNoteDrop(app, event) {
   event.preventDefault();
-  
+
   // Get the drag data
   const data = TextEditor.getDragEventData(event);
-  
+
   if (!data || data.type !== 'Item') return;
-  
+
   // Get the item from the drag data
   const item = await fromUuid(data.uuid);
   if (!item || item.type !== 'dnd5e-sheet-notes.note') return;
-  
+
   // Make sure this item belongs to the current actor
   if (item.parent?.id !== app.actor.id) return;
-  
+
   // Get target category ID from the drop target
   const dropTarget = event.target.closest('.items-section');
   if (!dropTarget) return;
-  
+
   const targetCategoryId = dropTarget.dataset.categoryId;
-  
+
   // Convert category ID (default-notes should be empty string)
   const targetCategory = targetCategoryId === 'default-notes' ? '' : targetCategoryId;
   const currentCategory = item.system.category || '';
-  
+
   // Don't update if already in this category
   if (currentCategory === targetCategory) return;
-  
+
   // Update the item's category
   await item.update({
     'system.category': targetCategory

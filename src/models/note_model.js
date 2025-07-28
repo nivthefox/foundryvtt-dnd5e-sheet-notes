@@ -7,12 +7,12 @@ export class NoteModel extends foundry.abstract.DataModel {
     return {
       description: new fields.SchemaField({
         value: new fields.HTMLField({
-          initial: "",
+          initial: '',
           blank: true
         })
       }),
       category: new fields.StringField({
-        initial: "",
+        initial: '',
         blank: true
       })
     };

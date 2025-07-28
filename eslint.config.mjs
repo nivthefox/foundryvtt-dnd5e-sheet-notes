@@ -47,7 +47,9 @@ export default [
         renderTemplate: 'readonly',
         getTemplate: 'readonly',
         SortingHelpers: 'readonly',
-        DragDrop: 'readonly'
+        DragDrop: 'readonly',
+        DocumentSheetConfig: 'readonly',
+        dnd5e: 'readonly'
       }
     }
   },

@@ -57,7 +57,7 @@ async function addNotesContent(app, el) {
     return;
   }
 
-  let notesContent = tabBody.querySelector('.tab.notes[data-tab="notes"]');
+  let notesContent = tabBody.querySelector('.tab.dnd5e-sheet-notes[data-tab="notes"]');
 
   if (!notesContent) {
     const active = app._tabs?.[0]?.active === 'notes';
@@ -68,7 +68,7 @@ async function addNotesContent(app, el) {
 
     tabBody.insertAdjacentHTML('beforeend', notesHtml);
 
-    notesContent = tabBody.querySelector('.tab.notes[data-tab="notes"]');
+    notesContent = tabBody.querySelector('.tab.dnd5e-sheet-notes[data-tab="notes"]');
     activateNotesListeners(app.actor, app, notesContent);
   }
 }
@@ -315,7 +315,7 @@ function addNotesButtons(app, html) {
       const noteData = {
         name: 'New Note',
         type: 'dnd5e-sheet-notes.note',
-        img: 'modules/dnd5e-sheet-notes/public/note.svg',
+        img: 'icons/svg/book.svg',
         system: {
           description: {
             value: ''
@@ -395,14 +395,14 @@ function handleNoteDragStart(app, event) {
   event.dataTransfer.setData('text/plain', JSON.stringify(dragData));
 
   setTimeout(() => {
-    const notesTab = li.closest('.tab.notes');
+    const notesTab = li.closest('.tab.dnd5e-sheet-notes');
     if (notesTab) {
       notesTab.classList.add('dragging-active');
     }
   }, 0);
 
   const cleanup = () => {
-    const notesTab = li.closest('.tab.notes');
+    const notesTab = li.closest('.tab.dnd5e-sheet-notes');
     if (notesTab) {
       notesTab.classList.remove('dragging-active');
     }

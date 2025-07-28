@@ -2,28 +2,25 @@
  * 5e Sheet Notes & Trackers Styles
  */
 
+
 /* Note Item Sheet Customizations */
 .dnd5e2.sheet.item.dnd5e-sheet-notes {
-  /* Hide the chat description section */
   .card.description[data-target="system.description.chat"] {
     display: none;
   }
   
-  /* Hide the entire tab navigation bar */
   nav.tabs {
     display: none;
   }
   
-  /* Also hide the ampersand separator since we don't need it without tabs */
   hr.ampersand {
     display: none;
   }
 }
 
 /* Notes tab styles */
-.tab.notes {
+.tab.dnd5e-sheet-notes {
   .top {
-    /* Actions container - use grid to push button to the right */
     .actions {
       display: grid;
       justify-content: end;
@@ -35,13 +32,12 @@
     padding-left: 0.5rem;
   }
   
-  /* Fix width issues on NPC sheets */
   .items-list {
     width: 100%;
     
     .items-section {
       width: 100%;
-      min-height: 3rem; /* Ensure drop zone area even when empty */
+      min-height: 3rem;
       
       .item-list {
         width: 100%;
@@ -60,19 +56,16 @@
     }
   }
   
-  /* Hide empty categories by default, except when sheet is editable or actively dragging */
   .items-section:not(:has(.item)) {
     display: none;
   }
   
-  /* Show empty categories when sheet is in edit mode */
   form.editable & .items-section:not(:has(.item)),
   form[data-mode="edit"] & .items-section:not(:has(.item)),
   .sheet.editable & .items-section:not(:has(.item)) {
     display: block;
   }
   
-  /* Show empty categories when actively dragging */
   &.dragging-active .items-section:not(:has(.item)) {
     display: block;
   }
@@ -96,18 +89,16 @@
 
 /* Category Editor styles */
 .category-editor {
-  /* Standardize form-group heights */
   .form-group {
     min-height: 40px;
     
     .form-fields {
       display: flex;
       align-items: center;
-      min-height: 28px; /* Account for label height */
+      min-height: 28px;
     }
   }
 
-  /* Style radio buttons to match D&D 5e proficiency cycle style */
   label.checkbox {
     input[type="radio"] {
       position: absolute;
@@ -117,7 +108,6 @@
       opacity: 0;
     }
     
-    /* Create the circular visual element */
     position: relative;
     display: flex;
     align-items: center;
@@ -135,12 +125,10 @@
       flex-shrink: 0;
     }
     
-    /* Fill the circle when radio is checked */
     &:has(input:checked)::before {
       background: var(--dnd5e-color-gold);
     }
     
-    /* Hover effect */
     &:hover::before {
       box-shadow: 0 0 3px var(--dnd5e-color-gold);
     }

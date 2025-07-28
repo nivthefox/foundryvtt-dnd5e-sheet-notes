@@ -29,6 +29,6 @@ export class NoteModel extends foundry.abstract.DataModel {
     if (!CONFIG.DND5E.defaultArtwork.Item) {
       CONFIG.DND5E.defaultArtwork.Item = {};
     }
-    CONFIG.DND5E.defaultArtwork.Item["dnd5e-sheet-notes.note"] = "modules/dnd5e-sheet-notes/public/note.svg";
+    CONFIG.DND5E.defaultArtwork.Item['dnd5e-sheet-notes.note'] = 'modules/dnd5e-sheet-notes/public/note.svg';
   }
 }

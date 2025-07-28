@@ -107,7 +107,6 @@ export class NoteContextMenu {
     }
 
 
-
     menu.appendChild(contextItems);
     return menu;
   }

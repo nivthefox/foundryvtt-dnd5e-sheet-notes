@@ -1,4 +1,4 @@
-[![Check Actions Status](https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes/workflows/checks/badge.svg)](https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes/actions)
+[![Release Status](https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes/workflows/release/badge.svg)](https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes/actions)
 [![Downloads](https://img.shields.io/github/downloads/nivthefox/foundryvtt-dnd5e-sheet-notes/latest/module.zip)](https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes/releases/latest)
 [![Forge Install %](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fdnd5e-sheet-notes&colorB=4aa94a)](https://forge-vtt.com/bazaar#package=dnd5e-sheet-notes)
 [![Foundry Hub Endorsements](https://img.shields.io/endpoint?logoColor=white&url=https%3A%2F%2Fwww.foundryvtt-hub.com%2Fwp-json%2Fhubapi%2Fv1%2Fpackage%2Fdnd5e-sheet-notes%2Fshield%2Fendorsements)](https://www.foundryvtt-hub.com/package/dnd5e-sheet-notes/)

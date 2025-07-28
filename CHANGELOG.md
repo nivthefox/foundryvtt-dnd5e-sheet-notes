@@ -8,37 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Initial module foundation for FoundryVTT v12+ and D&D 5e system v4.1.2+
-- Custom Note item type for D&D 5e system
-  - Simple note-taking interface with title and rich text content
-  - Extends D&D 5e ItemSheet5e2 for full system compatibility
-  - Hides unnecessary UI elements (chat description, tabs)
-- Notes tab on character sheets
-  - Appears on both PC and NPC character sheets
-  - Uses fa-book-open icon to match Foundry's Journal interface
-- Category management system
-  - Create, edit, and delete note categories
-  - Default "Notes" category that cannot be deleted
-  - Alphabetical and manual ordering options
-  - Categories stored as actor flags
-  - Empty categories hidden except in edit mode
-  - D&D 5e styled radio buttons for ordering selection
-- Note item management and display
-  - Notes grouped by category in Notes tab
-  - Click note name to view/edit content
-  - Create new notes with Add Note button
-  - Delete notes with confirmation dialog
-  - Notes use book icon by default
-  - Category association via system.category field
-  - Drag and drop notes between categories using Foundry's native system
-- Context menu for note items
-  - Right-click or ellipsis button to open context menu
-  - View, Edit, Duplicate, and Delete actions
-  - Matches D&D 5e styling and behavior
-  - Click outside to close menu
-
-### Fixed
-- Item type integration with D&D 5e system
-  - Note items now display proper localized label in creation dialog
-  - Custom colorable icon matches D&D 5e system styling
-  - Default artwork properly configured for creation dialog
+- Notes tab on character sheets (PC and NPC)
+- Create and organize notes with custom categories
+- Drag and drop notes between categories
+- Right-click context menu for notes (view, edit, duplicate, delete)
+- Rich text editor for note content

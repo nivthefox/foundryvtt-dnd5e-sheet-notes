@@ -41,6 +41,7 @@
     
     .items-section {
       width: 100%;
+      min-height: 3rem; /* Ensure drop zone area even when empty */
       
       .item-list {
         width: 100%;

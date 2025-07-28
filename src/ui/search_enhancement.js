@@ -4,7 +4,8 @@
  */
 
 /**
- * Register libWrapper enhancement for ItemListControlsElement
+ * Register libWrapper enhancement for ItemListControlsElement to enable content searching in notes
+ * Uses libWrapper to extend the _applyFilters method to show notes that match content but not titles
  */
 export function registerSearchEnhancement() {
   // Use libWrapper to enhance item-list-controls search for content matching

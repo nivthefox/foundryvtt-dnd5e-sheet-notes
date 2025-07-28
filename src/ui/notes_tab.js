@@ -213,7 +213,6 @@ function activateNotesListeners(actor, app, container) {
         const category = Category.fromActor(actor, categoryId);
         if (category) {
           await category.toggleCollapsed();
-          app.render();
         }
       } catch (error) {
         ui.notifications.error(error.message);

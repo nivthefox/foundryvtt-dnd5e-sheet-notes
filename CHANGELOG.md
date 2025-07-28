@@ -14,13 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Favorites support - notes can now be dragged to the favorites bar and clicked to open
 
 ### Changed
-- Removed minimum height from category sections for more compact layout
-- Default category now uses proper random ID instead of hardcoded key
-- Default category only created when needed (when uncategorized notes exist)
-- Added version-based migration system for future data updates
-- Automatic migration of uncategorized notes to default category when Notes tab is opened
-- Default "Notes" category can now be edited (ordering, collapse) but not renamed or deleted
-- Improved category control button alignment and spacing
+- More compact category layout with improved control button alignment
+- Default "Notes" category can now be collapsed and reordered
+- Uncategorized notes are automatically organized into the default category
 
 ## [1.0.0](https://github.com/nivthefox/foundryvtt-dnd5e-sheet-notes/releases/tag/1.0.0) - 2025-07-27
 

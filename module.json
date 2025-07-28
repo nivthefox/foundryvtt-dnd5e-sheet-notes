@@ -2,7 +2,7 @@
   "id": "dnd5e-sheet-notes",
   "title": "Sheet Notes DnD5e",
   "description": "Adds a Notes tab to D&D 5th Edition character sheets with integrated note-taking and tracker functionality",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "compatibility": {
     "minimum": "12",
     "verified": "12"

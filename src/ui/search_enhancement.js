@@ -12,7 +12,7 @@ export function registerSearchEnhancement() {
   libWrapper.register('dnd5e-sheet-notes', 'dnd5e.applications.components.ItemListControlsElement.prototype._applyFilters', function(wrapped) {
     // Call the original method first
     const result = wrapped();
-    
+
     // Check if this is our notes search and we have content matches to show
     if (this.getAttribute('for') === 'notes' && this.app?._notesContentMatches?.size > 0) {
       const searchTerm = this.app._filters.notes.name;
@@ -29,7 +29,7 @@ export function registerSearchEnhancement() {
         });
       }
     }
-    
+
     return result;
   }, 'WRAPPER');
 }

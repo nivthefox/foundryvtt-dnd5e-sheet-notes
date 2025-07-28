@@ -30,14 +30,14 @@ export class NoteModel extends foundry.abstract.DataModel {
    */
   getFavoriteData() {
     let subtitle = game.i18n.localize('dnd5e-sheet-notes.type.note');
-    
+
     if (this.category) {
       const category = Category.fromActor(this.parent.parent, this.category);
       if (category) {
         subtitle = category.name;
       }
     }
-    
+
     return {
       img: this.parent.img,
       title: this.parent.name,

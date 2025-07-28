@@ -46,7 +46,7 @@ async function addNotes(app, html, _data) {
     app._filters = {};
   }
   if (!app._filters.notes) {
-    app._filters.notes = { name: "", properties: new Set() };
+    app._filters.notes = { name: '', properties: new Set() };
   }
 
   // Store content search results for the component to use
@@ -55,13 +55,13 @@ async function addNotes(app, html, _data) {
   // Add custom filtering method that includes content search
   app._filterChildren = function(collection, properties) {
     if (collection !== 'notes') return null;
-    
+
     const allNotes = this.actor.items.filter(item => item.type === 'dnd5e-sheet-notes.note');
     const searchTerm = this._filters.notes.name.toLowerCase();
-    
+
     // Clear previous content matches
     this._notesContentMatches.clear();
-    
+
     if (searchTerm) {
       // Find notes that match content and store their IDs
       allNotes.forEach(note => {
@@ -75,7 +75,7 @@ async function addNotes(app, html, _data) {
         }
       });
     }
-    
+
     return allNotes;
   };
 

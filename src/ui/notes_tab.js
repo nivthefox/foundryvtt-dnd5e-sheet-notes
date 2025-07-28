@@ -7,7 +7,6 @@ import { CategoryEditor } from './category_editor';
 import { CategoryManager } from '../services/category_manager';
 import { NoteContextMenu } from './note_context_menu';
 
-// Sheet mode constants
 const SHEET_MODES = {
   PLAY: 1,
   EDIT: 2
@@ -17,12 +16,10 @@ const SHEET_MODES = {
  * Initialize the notes tab feature
  */
 export function initializeNotesTab() {
-  // Register the partial template
   loadTemplates([
     'modules/dnd5e-sheet-notes/templates/partials/note_item.hbs'
   ]);
 
-  // Register hooks for both PC and NPC sheets
   Hooks.on('renderActorSheet5eCharacter2', addNotes);
   Hooks.on('renderActorSheet5eNPC2', addNotes);
 }
@@ -34,23 +31,18 @@ export function initializeNotesTab() {
  * @param {Object} data - The sheet data
  */
 async function addNotes(app, html, _data) {
-  // Normalize to DOM element - could be the whole app or just the form
   const el = html[0] || html;
 
-  // Ensure we have the application root element, not just the form
   const root = el.closest('.app') || el.querySelector('.app') || el;
 
   if (!app.isEditable) {
     return;
   }
 
-  // Add the tab content
   await addNotesContent(app, root);
 
-  // Add the tab navigation button
   addNotesTab(root);
 
-  // Add the action buttons
   addNotesButtons(app, root);
 }
 
@@ -60,22 +52,18 @@ async function addNotes(app, html, _data) {
  * @param {HTMLElement} el - The sheet element
  */
 async function addNotesContent(app, el) {
-  // Find the tab body container
   const tabBody = el.querySelector('.tab-body');
   if (!tabBody) {
     return;
   }
 
-  // Check if Notes tab content already exists
   let notesContent = tabBody.querySelector('.tab.notes[data-tab="notes"]');
 
   if (!notesContent) {
     const active = app._tabs?.[0]?.active === 'notes';
 
-    // Build the template data
     const templateData = await getNotesTabData(app.actor, active, app._mode);
 
-    // Render the content (template already includes the tab wrapper)
     const notesHtml = await renderTemplate('modules/dnd5e-sheet-notes/templates/notes_tab.hbs', templateData);
 
     tabBody.insertAdjacentHTML('beforeend', notesHtml);
@@ -90,18 +78,15 @@ async function addNotesContent(app, el) {
  * @param {HTMLElement} el - The sheet element
  */
 function addNotesTab(el) {
-  // Find the tabs navigation container
   const tabsNav = el.querySelector('.tabs[data-group="primary"]');
   if (!tabsNav) {
     return;
   }
 
-  // Check if Notes tab already exists
   if (tabsNav.querySelector('[data-tab="notes"]')) {
     return;
   }
 
-  // Create the Notes tab element
   const notesTab = document.createElement('a');
   notesTab.className = 'item control';
   notesTab.dataset.group = 'primary';
@@ -110,7 +95,6 @@ function addNotesTab(el) {
   notesTab.setAttribute('aria-label', game.i18n.localize('dnd5e-sheet-notes.tab.label'));
   notesTab.innerHTML = '<i class="fas fa-book-open"></i>';
 
-  // Append to end of tabs
   tabsNav.appendChild(notesTab);
 }
 
@@ -122,10 +106,8 @@ function addNotesTab(el) {
  * @returns {Object} Template data
  */
 async function getNotesTabData(actor, active, mode) {
-  // Get categories from the actor
   let categories = actor.getFlag('dnd5e-sheet-notes', 'categories') || [];
 
-  // Ensure default "Notes" category exists
   if (!categories.find(c => c.name === 'Notes')) {
     categories = [{
       key: 'default-notes',
@@ -134,30 +116,23 @@ async function getNotesTabData(actor, active, mode) {
     }, ...categories];
   }
 
-  // Sort categories alphabetically
   categories.sort((a, b) => a.name.localeCompare(b.name));
 
-  // Get all Note items from the actor
   const allNotes = actor.items.filter(item => item.type === 'dnd5e-sheet-notes.note');
 
-  // Build category data with their associated notes
   const categoryData = categories.map(category => {
-    // Filter notes for this category
     const categoryNotes = allNotes.filter(note => {
       const noteCategory = note.system.category;
-      // Uncategorized notes (empty string, null, or undefined) go to default "Notes" category
       if (!noteCategory || noteCategory === '') {
         return category.key === 'default-notes' || category.name === 'Notes';
       }
       return noteCategory === category.key;
     });
 
-    // Sort notes based on category ordering preference
     const notes = categoryNotes.sort((a, b) => {
       if (category.ordering === 0) { // ALPHABETICAL
         return a.name.localeCompare(b.name);
       }
-      // MANUAL ordering would use sort field when we implement drag & drop
       return (a.sort || 0) - (b.sort || 0);
     });
 
@@ -183,16 +158,13 @@ async function getNotesTabData(actor, active, mode) {
  * @param {HTMLElement} container - The container element
  */
 function activateNotesListeners(actor, app, container) {
-  // Initialize context menu system
   NoteContextMenu.initialize(container, app);
 
-  // Add Category button
   container.querySelector('.add-category')?.addEventListener('click', async event => {
     event.preventDefault();
     CategoryEditor.show(actor);
   });
 
-  // Edit Category links
   container.querySelectorAll('.item-control[data-action="edit-category"]').forEach(link => {
     link.addEventListener('click', async event => {
       event.preventDefault();
@@ -206,7 +178,6 @@ function activateNotesListeners(actor, app, container) {
     });
   });
 
-  // Delete Category links
   container.querySelectorAll('.item-control[data-action="delete-category"]').forEach(link => {
     link.addEventListener('click', async event => {
       event.preventDefault();
@@ -216,7 +187,6 @@ function activateNotesListeners(actor, app, container) {
       const category = categories.find(c => c.key === categoryId);
       if (!category) return;
 
-      // Confirm deletion using DialogV2
       try {
         const confirm = await foundry.applications.api.DialogV2.confirm({
           window: {
@@ -241,7 +211,6 @@ function activateNotesListeners(actor, app, container) {
           await CategoryManager.deleteCategory(actor, categoryId);
         }
       } catch (error) {
-        // Dialog was dismissed (same as clicking "No")
         if (error.message !== 'Dialog was dismissed without pressing a button.') {
           ui.notifications.error(error.message);
         }
@@ -249,7 +218,6 @@ function activateNotesListeners(actor, app, container) {
     });
   });
 
-  // Open note on click
   container.querySelectorAll('.item-name[data-action="open-note"]').forEach(link => {
     link.addEventListener('click', async event => {
       event.preventDefault();
@@ -262,7 +230,6 @@ function activateNotesListeners(actor, app, container) {
     });
   });
 
-  // Edit note action
   container.querySelectorAll('.item-control[data-action="edit-note"]').forEach(link => {
     link.addEventListener('click', async event => {
       event.preventDefault();
@@ -275,7 +242,6 @@ function activateNotesListeners(actor, app, container) {
     });
   });
 
-  // Delete note action
   container.querySelectorAll('.item-control[data-action="delete-note"]').forEach(link => {
     link.addEventListener('click', async event => {
       event.preventDefault();
@@ -284,7 +250,6 @@ function activateNotesListeners(actor, app, container) {
       const note = actor.items.get(noteId);
       if (!note) return;
 
-      // Confirm deletion using DialogV2
       try {
         const confirm = await foundry.applications.api.DialogV2.confirm({
           window: {
@@ -309,7 +274,6 @@ function activateNotesListeners(actor, app, container) {
           await note.delete();
         }
       } catch (error) {
-        // Dialog was dismissed (same as clicking "No")
         if (error.message !== 'Dialog was dismissed without pressing a button.') {
           ui.notifications.error(error.message);
         }
@@ -317,7 +281,6 @@ function activateNotesListeners(actor, app, container) {
     });
   });
 
-  // Setup drag and drop using Foundry's system
   setupNoteDragDrop(app, container);
 }
 
@@ -333,16 +296,13 @@ function addNotesButtons(app, html) {
     return;
   }
 
-  // Check if buttons already exist
   if (form.querySelector('.create-child.dnd5e-sheet-notes')) {
     return;
   }
 
-  // Find the warnings dialog or the last child
   const warningsDialog = form.querySelector('dialog.warnings');
   const insertBefore = warningsDialog || null;
 
-  // Add Note button
   const addNoteBtn = document.createElement('button');
   addNoteBtn.type = 'button';
   addNoteBtn.className = 'gold-button create-child dnd5e-sheet-notes add-note';
@@ -351,7 +311,6 @@ function addNotesButtons(app, html) {
   addNoteBtn.addEventListener('click', async event => {
     event.preventDefault();
 
-    // Create a new Note item
     try {
       const noteData = {
         name: 'New Note',
@@ -367,7 +326,6 @@ function addNotesButtons(app, html) {
 
       const [note] = await app.actor.createEmbeddedDocuments('Item', [noteData]);
 
-      // Open the new note for editing
       if (note) {
         note.sheet.render(true);
       }
@@ -376,7 +334,6 @@ function addNotesButtons(app, html) {
     }
   });
 
-  // Add Category button
   const addCategoryBtn = document.createElement('button');
   addCategoryBtn.type = 'button';
   addCategoryBtn.className = 'gold-button create-child dnd5e-sheet-notes add-category';
@@ -387,7 +344,6 @@ function addNotesButtons(app, html) {
     CategoryEditor.show(app.actor);
   });
 
-  // Insert before warnings dialog or at the end
   if (insertBefore) {
     form.insertBefore(addNoteBtn, insertBefore);
     form.insertBefore(addCategoryBtn, insertBefore);
@@ -404,7 +360,6 @@ function addNotesButtons(app, html) {
  * @param {HTMLElement} container - The notes tab container
  */
 function setupNoteDragDrop(app, container) {
-  // Create a new DragDrop handler for the notes tab
   const dragDrop = new DragDrop({
     dragSelector: '.item[data-item-id]',
     dropSelector: '.items-section',
@@ -418,7 +373,6 @@ function setupNoteDragDrop(app, container) {
     }
   });
 
-  // Bind the drag drop handler to the container
   dragDrop.bind(container);
 }
 
@@ -436,13 +390,10 @@ function handleNoteDragStart(app, event) {
   const item = app.actor.items.get(itemId);
   if (!item || item.type !== 'dnd5e-sheet-notes.note') return;
 
-  // Get drag data from the item
   const dragData = item.toDragData();
 
-  // Set the drag data
   event.dataTransfer.setData('text/plain', JSON.stringify(dragData));
 
-  // Add visual feedback
   setTimeout(() => {
     const notesTab = li.closest('.tab.notes');
     if (notesTab) {
@@ -450,7 +401,6 @@ function handleNoteDragStart(app, event) {
     }
   }, 0);
 
-  // Store cleanup function for dragend
   const cleanup = () => {
     const notesTab = li.closest('.tab.notes');
     if (notesTab) {
@@ -470,32 +420,25 @@ function handleNoteDragStart(app, event) {
 async function handleNoteDrop(app, event) {
   event.preventDefault();
 
-  // Get the drag data
   const data = TextEditor.getDragEventData(event);
 
   if (!data || data.type !== 'Item') return;
 
-  // Get the item from the drag data
   const item = await fromUuid(data.uuid);
   if (!item || item.type !== 'dnd5e-sheet-notes.note') return;
 
-  // Make sure this item belongs to the current actor
   if (item.parent?.id !== app.actor.id) return;
 
-  // Get target category ID from the drop target
   const dropTarget = event.target.closest('.items-section');
   if (!dropTarget) return;
 
   const targetCategoryId = dropTarget.dataset.categoryId;
 
-  // Convert category ID (default-notes should be empty string)
   const targetCategory = targetCategoryId === 'default-notes' ? '' : targetCategoryId;
   const currentCategory = item.system.category || '';
 
-  // Don't update if already in this category
   if (currentCategory === targetCategory) return;
 
-  // Update the item's category
   await item.update({
     'system.category': targetCategory
   });

@@ -1,7 +1,11 @@
 /**
- * Data model for Note items
+ * Data model for Note items extending Foundry's DataModel
  */
 export class NoteModel extends foundry.abstract.DataModel {
+  /**
+   * Define the data schema for Note items
+   * @returns {Object} The schema definition
+   */
   static defineSchema() {
     const fields = foundry.data.fields;
     return {
@@ -22,7 +26,6 @@ export class NoteModel extends foundry.abstract.DataModel {
    * Configure the Note item type settings
    */
   static setup() {
-    // Set the default icon for Note items in creation dialogs
     if (!CONFIG.DND5E.defaultArtwork.Item) {
       CONFIG.DND5E.defaultArtwork.Item = {};
     }

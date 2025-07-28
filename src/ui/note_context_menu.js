@@ -12,7 +12,6 @@ export class NoteContextMenu {
    * @param {ActorSheet5e} sheet - The sheet application instance
    */
   static initialize(container, sheet) {
-    // Handle right-click context menu
     container.addEventListener('contextmenu', event => {
       const noteItem = event.target.closest('.item[data-note-key]');
       if (noteItem) {
@@ -22,7 +21,6 @@ export class NoteContextMenu {
       }
     });
 
-    // Handle ellipsis button clicks
     container.addEventListener('click', event => {
       if (event.target.closest('[data-context-menu]')) {
         event.preventDefault();
@@ -34,10 +32,8 @@ export class NoteContextMenu {
       }
     });
 
-    // Set up global click handler if not already done
     if (!this.documentClickHandler) {
       this.documentClickHandler = event => {
-        // Don't close if clicking on the context menu itself
         if (!event.target.closest('#context-menu')) {
           this.closeContextMenu();
         }
@@ -53,7 +49,6 @@ export class NoteContextMenu {
    * @param {ActorSheet5e} sheet - The sheet application instance
    */
   static showContextMenu(event, noteItem, sheet) {
-    // Close any existing context menu
     this.closeContextMenu();
 
     const noteKey = noteItem.dataset.noteKey;
@@ -62,16 +57,12 @@ export class NoteContextMenu {
 
     if (!note) return;
 
-    // Create context menu element
     const contextMenu = this.createContextMenuElement(note, sheet);
 
-    // Position the menu
     this.positionContextMenu(contextMenu, event);
 
-    // Add to DOM
     document.body.appendChild(contextMenu);
 
-    // Store reference for cleanup
     this.activeContextMenu = contextMenu;
   }
 
@@ -89,14 +80,12 @@ export class NoteContextMenu {
     const contextItems = document.createElement('ol');
     contextItems.className = 'context-items';
 
-    // View Note
     contextItems.appendChild(this.createContextItem(
       'fas fa-eye fa-fw',
       'View Note',
       () => this.viewNote(note)
     ));
 
-    // Edit Note (only if sheet is editable)
     if (sheet.isEditable) {
       contextItems.appendChild(this.createContextItem(
         'fas fa-edit fa-fw',
@@ -117,28 +106,7 @@ export class NoteContextMenu {
       ));
     }
 
-    // Display in Chat - removed for notes
-    // contextItems.appendChild(this.createContextItem(
-    //   'fas fa-message fa-fw',
-    //   'Display in Chat',
-    //   () => this.displayInChat(note)
-    // ));
 
-    // State group for favorite - temporarily hidden
-    // const stateGroup = document.createElement('li');
-    // stateGroup.className = 'context-group';
-    // stateGroup.setAttribute('data-group-id', 'state');
-    // 
-    // const stateList = document.createElement('ol');
-    // const isFavorite = note.getFlag('dnd5e-sheet-notes', 'favorite') === true;
-    // stateList.appendChild(this.createContextItem(
-    //   isFavorite ? 'fas fa-bookmark fa-fw' : 'far fa-bookmark fa-fw',
-    //   isFavorite ? 'Unfavorite' : 'Favorite',
-    //   () => this.toggleFavorite(note)
-    // ));
-    // 
-    // stateGroup.appendChild(stateList);
-    // contextItems.appendChild(stateGroup);
 
     menu.appendChild(contextItems);
     return menu;
@@ -180,7 +148,6 @@ export class NoteContextMenu {
     let x = event.clientX;
     let y = event.clientY;
 
-    // Ensure menu stays within viewport
     const menuRect = { width: 200, height: 250 }; // Approximate menu size
     const viewport = {
       width: window.innerWidth,

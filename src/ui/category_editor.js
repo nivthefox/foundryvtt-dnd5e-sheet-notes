@@ -74,7 +74,6 @@ export class CategoryEditor extends foundry.applications.api
    * @private
    */
   static async #onSave(_event, _target) {
-    // Get form data manually from the dialog content
     const form = this.element.querySelector('form');
     const nameInput = form?.querySelector('input[name="name"]');
     const orderingInput = form?.querySelector('input[name="ordering"]:checked');
@@ -84,10 +83,8 @@ export class CategoryEditor extends foundry.applications.api
       ordering: parseInt(orderingInput?.value) || 0
     };
 
-    // Get the editor instance
     const editor = this;
 
-    // Validate the form data
     const errors = editor.#validateFormData(data);
     if (errors.length > 0) {
       ui.notifications.error(errors[0]);
@@ -96,18 +93,15 @@ export class CategoryEditor extends foundry.applications.api
 
     try {
       if (!editor.isEditMode) {
-        // Create new category
         await CategoryManager.createCategory(editor.actor, {
           name: data.name.trim(),
           ordering: data.ordering
         });
       } else {
-        // Update existing category
         const updates = {
           ordering: data.ordering
         };
 
-        // Include name if it's not the Notes category
         if (editor.category.name !== 'Notes') {
           updates.name = data.name.trim();
         }
@@ -115,7 +109,6 @@ export class CategoryEditor extends foundry.applications.api
         await CategoryManager.updateCategory(editor.actor, editor.category.key, updates);
       }
 
-      // Close the editor
       editor.close();
     } catch (error) {
       ui.notifications.error(error.message);
@@ -131,14 +124,12 @@ export class CategoryEditor extends foundry.applications.api
   #validateFormData(data) {
     const errors = [];
 
-    // Validate name (only for create mode)
     if (!this.isEditMode) {
       if (!data.name || data.name.trim() === '') {
         errors.push(game.i18n.localize('dnd5e-sheet-notes.category.errors.name-required'));
       } else if (data.name.trim().length > 50) {
         errors.push(game.i18n.localize('dnd5e-sheet-notes.category.errors.name-too-long'));
       } else {
-        // Check for duplicate names
         const categories = this.actor.getFlag('dnd5e-sheet-notes', 'categories') || [];
         const nameExists = categories.some(cat => cat.name.toLowerCase() === data.name.trim().toLowerCase());
         if (nameExists) {
@@ -169,7 +160,6 @@ export class CategoryEditor extends foundry.applications.api
       await CategoryEditor.#onSave.call(editor, event, event.currentTarget);
     });
 
-    // Prevent Enter key from submitting form in input fields
     editor.element.querySelectorAll('input[type="text"]').forEach(input => {
       input.addEventListener('keydown', async event => {
         if (event.key === 'Enter') {

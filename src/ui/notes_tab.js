@@ -4,8 +4,9 @@
  */
 
 import { CategoryEditor } from './category_editor';
-import { CategoryManager } from '../services/category_manager';
+import { Category } from '../entities/category';
 import { NoteContextMenu } from './note_context_menu';
+import { runMigrations } from '../migrations/migrations.js';
 
 const SHEET_MODES = {
   PLAY: 1,
@@ -62,7 +63,7 @@ async function addNotesContent(app, el) {
   if (!notesContent) {
     const active = app._tabs?.[0]?.active === 'notes';
 
-    await CategoryManager.runMigrations(app.actor);
+    await runMigrations(app.actor);
 
     const templateData = await getNotesTabData(app.actor, active, app._mode);
 
@@ -108,7 +109,7 @@ function addNotesTab(el) {
  * @returns {Object} Template data
  */
 async function getNotesTabData(actor, active, mode) {
-  await CategoryManager.ensureDefaultCategory(actor);
+  await Category.ensureDefault(actor);
   let categories = actor.getFlag('dnd5e-sheet-notes', 'categories') || [];
 
   categories.sort((a, b) => a.name.localeCompare(b.name));
@@ -170,8 +171,11 @@ function activateNotesListeners(actor, app, container) {
       const categoryId = categoryElement.dataset.categoryId;
 
       try {
-        await CategoryManager.toggleCollapsed(actor, categoryId);
-        app.render();
+        const category = Category.fromActor(actor, categoryId);
+        if (category) {
+          await category.toggleCollapsed();
+          app.render();
+        }
       } catch (error) {
         ui.notifications.error(error.message);
       }
@@ -183,8 +187,7 @@ function activateNotesListeners(actor, app, container) {
       event.preventDefault();
       event.stopPropagation();
       const categoryId = event.currentTarget.dataset.categoryId;
-      const categories = actor.getFlag('dnd5e-sheet-notes', 'categories') || [];
-      const category = categories.find(c => c.key === categoryId);
+      const category = Category.fromActor(actor, categoryId);
       if (category) {
         CategoryEditor.show(actor, category);
       }
@@ -196,8 +199,7 @@ function activateNotesListeners(actor, app, container) {
       event.preventDefault();
       event.stopPropagation();
       const categoryId = event.currentTarget.dataset.categoryId;
-      const categories = actor.getFlag('dnd5e-sheet-notes', 'categories') || [];
-      const category = categories.find(c => c.key === categoryId);
+      const category = Category.fromActor(actor, categoryId);
       if (!category) return;
 
       try {
@@ -221,7 +223,7 @@ function activateNotesListeners(actor, app, container) {
         });
 
         if (confirm) {
-          await CategoryManager.delete(actor, categoryId);
+          await category.delete();
         }
       } catch (error) {
         if (error.message !== 'Dialog was dismissed without pressing a button.') {
@@ -442,7 +444,7 @@ async function handleNoteDrop(app, event) {
 
   if (item.parent?.id !== app.actor.id) return;
 
-  await CategoryManager.ensureDefaultCategory(app.actor);
+  await Category.ensureDefault(app.actor);
 
   const dropTarget = event.target.closest('.items-section');
   if (!dropTarget) return;

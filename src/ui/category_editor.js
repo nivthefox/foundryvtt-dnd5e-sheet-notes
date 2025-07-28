@@ -2,7 +2,7 @@
  * An editor for creating and editing note categories
  * @extends {ApplicationV2}
  */
-import { CategoryManager } from '../services/category_manager';
+import { Category } from '../entities/category';
 
 export class CategoryEditor extends foundry.applications.api
   .HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
@@ -93,7 +93,7 @@ export class CategoryEditor extends foundry.applications.api
 
     try {
       if (!editor.isEditMode) {
-        await CategoryManager.create(editor.actor, {
+        await Category.create(editor.actor, {
           name: data.name.trim(),
           ordering: data.ordering
         });
@@ -106,7 +106,7 @@ export class CategoryEditor extends foundry.applications.api
           updates.name = data.name.trim();
         }
 
-        await CategoryManager.update(editor.actor, editor.category.key, updates);
+        await editor.category.update(updates);
       }
 
       editor.close();
